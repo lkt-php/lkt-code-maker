@@ -1,0 +1,40 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $publicPath
+ * @var bool $isPublic
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :string {
+    return $this->_getFileVal('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>InternalPath() :string {
+    return $this->_getInternalPath('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Name() :string {
+    return $this->_getFileName('<?php echo $fieldName;?>');
+}
+<?php if($isPublic): ?>
+
+public function get<?php echo $fieldMethod;?>PublicPath() :string {
+    return $this->_getInternalPath('<?php echo $fieldName;?>');
+    return '<?php echo $publicPath;?>/' . $this->_getFileVal('{$field}')->name;
+}
+<?php endif;?>
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasFileVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(string $<?php echo $fieldName;?>)  {
+    $this->_setFileVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>InternalPath(string $<?php echo $fieldName;?>)  {
+    $this->_setInternalPath('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

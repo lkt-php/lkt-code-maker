@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :int {
+    return $this->_getIntegerVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasIntegerVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(int $<?php echo $fieldName;?>)  {
+    $this->_setIntegerVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

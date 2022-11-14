@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $component
+ * @var string $relatedReturnClass
+ * @var string $relatedClassName
+ */
+?>
+public function get<?php echo $fieldMethod;?>(): string {
+    return $this->_getForeignListVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasForeignListVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?>($<?php echo $fieldName;?>)  {
+    $this->_setForeignListVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+
+<?php if($component !== ''): ?>
+/** <?php echo $relatedReturnClass; ?>
+*/
+public function get<?php echo $fieldMethod;?>Data() :array {
+    return $this->_getForeignListData('<?php echo $fieldName;?>');
+}
+
+public function get<?php echo $fieldMethod;?>Ids() :array {
+    return $this->_getForeignListIds('<?php echo $fieldName;?>');
+}
+<?php endif; ?>

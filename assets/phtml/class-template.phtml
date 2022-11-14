@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var string $className
+ * @var string $component
+ * @var string $namespace
+ * @var string $extends
+ * @var string $implements
+ * @var string $traits
+ * @var string $methods
+ */
+?>
+
+namespace <?php echo $namespace?>;
+class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
+<?php echo $traits?>
+
+const GENERATED_TYPE = '<?php echo $component; ?>';
+
+public function __construct($id = 0) {
+    parent::__construct($id, static::GENERATED_TYPE);
+}
+<?php echo $methods?>
+}

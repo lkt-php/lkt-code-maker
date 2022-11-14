@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :float {
+    return $this->_getFloatVal('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Formatted() :float {
+    return $this->_getFloatFormattedVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasFloatVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(float $<?php echo $fieldName;?>)  {
+    $this->_setFloatVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

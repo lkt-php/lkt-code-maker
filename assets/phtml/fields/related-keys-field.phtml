@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $component
+ * @var string $relatedReturnClass
+ * @var string $relatedClassName
+ */
+?>
+/** <?php echo $relatedReturnClass; ?>
+*/
+public function get<?php echo $fieldMethod;?>(): array {
+    return $this->_getRelatedKeysVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasRelatedKeysVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}

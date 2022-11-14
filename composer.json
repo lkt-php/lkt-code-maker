@@ -1,0 +1,24 @@
+{
+  "name": "lkt/code-maker",
+  "description": "LKT Code maker",
+  "type": "library",
+  "version": "1.0.0",
+  "require": {
+    "php": ">=7.2.0",
+    "cocur/slugify": "^4.2",
+    "lkt/factory-schemas": "^1.0",
+    "lkt/factory-instantiator": "^1.0",
+    "lkt/templates": "^1.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5.20",
+    "symfony/var-dumper": "^5.0"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Lkt\\CodeMaker\\": "src",
+      "Lkt\\CodeMaker\\Tests\\": "tests"
+    }
+  }
+}

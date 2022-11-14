@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $isAssoc
+ */
+?>
+<?php if($isAssoc): ?>
+public function get<?php echo $fieldMethod;?>() :?array {
+    return $this->_getJsonVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?>(array $<?php echo $fieldName;?>)  {
+    $this->_setJsonVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+<?php else: ?>
+public function get<?php echo $fieldMethod;?>() :?\StdClass {
+    return $this->_getJsonVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?>(\StdClass $<?php echo $fieldName;?>)  {
+    $this->_setJsonVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+<?php endif; ?>
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasJsonVal('<?php echo $fieldName;?>');
+}

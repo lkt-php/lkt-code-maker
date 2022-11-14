@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $component
+ * @var string $relatedReturnClass
+ * @var string $relatedClassName
+ */
+?>
+public function get<?php echo $fieldMethod;?>Id(): int {
+    return $this->_getIntegerVal('<?php echo $fieldName;?>Id');
+}
+public function has<?php echo $fieldMethod;?>Id() :bool {
+    return $this->_hasIntegerVal('<?php echo $fieldName;?>Id');
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?>Id(int $<?php echo $fieldName;?>Id)  {
+    $this->_setIntegerVal('<?php echo $fieldName;?>Id', $<?php echo $fieldName;?>Id);
+    return $this;
+}
+
+<?php if($component !== ''): ?>
+/** <?php echo $relatedReturnClass; ?>
+*/
+public function get<?php echo $fieldMethod;?>() <?php echo $relatedClassName?> {
+    return $this->_getForeignVal('<?php echo $component;?>', '<?php echo $fieldName;?>Id');
+}
+
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasForeignVal('<?php echo $component;?>', '<?php echo $fieldName;?>Id');
+}
+<?php endif; ?>

@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $component
+ * @var string $relatedReturnClass
+ * @var string $relatedClassName
+ */
+?>
+/** <?php echo $relatedReturnClass; ?>
+*/
+public function get<?php echo $fieldMethod;?>(): array {
+    return $this->_getRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?>WithData(array $<?php echo $fieldName;?>)  {
+    $this->_setRelatedValWithData('<?php echo $component; ?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+/** @return \Lkt\Factory\InstanceFactory */
+public function get<?php echo $fieldMethod;?>InstanceFactory() {
+    return $this->_getRelatedInstanceFactory('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}

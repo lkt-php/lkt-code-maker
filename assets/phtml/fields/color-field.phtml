@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :string {
+    return $this->_getColorVal('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Rgb(float $opacity = null) :array {
+    return $this->_getColorRgbVal('<?php echo $fieldName;?>', $opacity);
+}
+public function get<?php echo $fieldMethod;?>RgbFormatted(float $opacity = null) :string {
+    return $this->_getColorRgbStringVal('<?php echo $fieldName;?>', $opacity);
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasColorVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(string $<?php echo $fieldName;?>)  {
+    $this->_setColorVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

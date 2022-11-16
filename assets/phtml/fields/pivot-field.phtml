@@ -11,8 +11,8 @@
 /** <?php echo $relatedReturnClass; ?>
 */
 public function get<?php echo $fieldMethod;?>(): array {
-    return $this->_getPivotVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+    return $this->_getPivotVal('<?php echo $fieldName;?>');
 }
 public function has<?php echo $fieldMethod;?>() :bool {
-    return $this->_hasPivotVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+    return $this->_hasPivotVal('<?php echo $fieldName;?>');
 }

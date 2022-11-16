@@ -109,12 +109,13 @@ class FieldsCodeHelper
             if ($field instanceof ForeignKeysField || $field instanceof RelatedField || $field instanceof RelatedKeysField) {
 
                 $relatedComponent = $field->getComponent();
-                $relatedSchema = Schema::get($relatedComponent);
-
-                $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
-                $templateData['component'] = $relatedComponent;
-                $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
-                $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
+                if (Schema::exists($relatedComponent)) {
+                    $relatedSchema = Schema::get($relatedComponent);
+                    $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+                    $templateData['component'] = $relatedComponent;
+                    $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
+                    $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
+                }
 
                 if ($field->isSoftTyped()) {
                     $templateData['relatedClassName'] = '';

@@ -7,7 +7,7 @@
  * @var bool $isPublic
  */
 ?>
-public function get<?php echo $fieldMethod;?>() :string {
+public function get<?php echo $fieldMethod;?>() {
     return $this->_getFileVal('<?php echo $fieldName;?>');
 }
 public function get<?php echo $fieldMethod;?>InternalPath() :string {
@@ -16,13 +16,9 @@ public function get<?php echo $fieldMethod;?>InternalPath() :string {
 public function get<?php echo $fieldMethod;?>Name() :string {
     return $this->_getFileName('<?php echo $fieldName;?>');
 }
-<?php if($isPublic): ?>
-
 public function get<?php echo $fieldMethod;?>PublicPath() :string {
-    return $this->_getInternalPath('<?php echo $fieldName;?>');
-    return '<?php echo $publicPath;?>/' . $this->_getFileVal('{$field}')->name;
+    return $this->_getPublicPath('<?php echo $fieldName;?>');
 }
-<?php endif;?>
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasFileVal('<?php echo $fieldName;?>');
 }

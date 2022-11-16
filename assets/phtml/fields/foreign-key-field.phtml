@@ -25,10 +25,10 @@ public function set<?php echo $fieldMethod;?>Id(int $<?php echo $fieldName;?>Id)
 /** <?php echo $relatedReturnClass; ?>
 */
 public function get<?php echo $fieldMethod;?>() <?php echo $relatedClassName?> {
-    return $this->_getForeignVal('<?php echo $component;?>', '<?php echo $fieldName;?>Id');
+    return $this->_getForeignVal('<?php echo $component;?>', $this->get<?php echo $fieldMethod;?>Id());
 }
 
 public function has<?php echo $fieldMethod;?>() :bool {
-    return $this->_hasForeignVal('<?php echo $component;?>', '<?php echo $fieldName;?>Id');
+    return $this->_hasForeignVal('<?php echo $component;?>', $this->get<?php echo $fieldMethod;?>Id());
 }
 <?php endif; ?>

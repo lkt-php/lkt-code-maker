@@ -1,6 +1,6 @@
 <?php
 
-namespace Lkt\Templates\Tests;
+namespace Lkt\CodeMaker\Tests;
 
 use Lkt\CodeMaker\CodeMaker;
 use Lkt\CodeMaker\Tests\Assets\TestClass;

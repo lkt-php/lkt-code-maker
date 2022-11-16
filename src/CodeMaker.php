@@ -12,12 +12,10 @@ class CodeMaker
 {
     public static function generate()
     {
-        /** @var Schema $schema */
         foreach (Schema::getStack() as $schema) {
 
             $component = $schema->getComponent();
             $instanceSettings = $schema->getInstanceSettings();
-            $className = $instanceSettings->getAppClass();
 
             $extends = $instanceSettings->hasLegalExtendClass()
                 ? $instanceSettings->getClassToBeExtended()
@@ -27,12 +25,12 @@ class CodeMaker
 
             $implements = $instanceSettings->getImplementedInterfacesAsString();
             if ($implements !== ''){
-                $implements = "implements {$implements}";
+                $implements = "implements {$implements};";
             }
 
             $traits = $instanceSettings->getUsedTraitsAsString();
             if ($traits !== ''){
-                $traits = "use {$traits}";
+                $traits = "use {$traits};";
             }
 
             $namespace = $instanceSettings->getNamespaceForGeneratedClass();
@@ -53,7 +51,12 @@ class CodeMaker
             $code = '<?php ' .$code;
 
             $filePath = $instanceSettings->getGeneratedClassFullPath();
-            return file_put_contents($filePath, $code);
+            $status = file_put_contents($filePath, $code);
+            if ($status === false) {
+                echo "Could't store {$filePath}";
+                echo "Maybe an invalid path or not enough permissions";
+            }
+            dump($status);
         }
     }
 }

@@ -2,13 +2,14 @@
   "name": "lkt/code-maker",
   "description": "LKT Code maker",
   "type": "library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "require": {
     "php": ">=7.2.0",
     "cocur/slugify": "^4.2",
     "lkt/factory-schemas": "^1.0",
     "lkt/factory-instantiator": "^1.0",
-    "lkt/templates": "^1.2"
+    "lkt/templates": "^1.2",
+    "lkt/commander": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.5.20",
@@ -19,6 +20,9 @@
     "psr-4": {
       "Lkt\\CodeMaker\\": "src",
       "Lkt\\CodeMaker\\Tests\\": "tests"
-    }
+    },
+    "files": [
+      "src/bootstrap.php"
+    ]
   }
 }

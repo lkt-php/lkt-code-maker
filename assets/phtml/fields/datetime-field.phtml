@@ -5,7 +5,7 @@
  * @var string $returnSelf
  */
 ?>
-public function get<?php echo $fieldMethod;?>() :string {
+public function get<?php echo $fieldMethod;?>(): ?\Carbon\Carbon {
     return $this->_getDateTimeVal('<?php echo $fieldName;?>');
 }
 public function get<?php echo $fieldMethod;?>Formatted(string $format = null) :string {

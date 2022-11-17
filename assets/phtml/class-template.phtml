@@ -7,10 +7,14 @@
  * @var string $implements
  * @var string $traits
  * @var string $methods
+ * @var string $returnSelf
  */
 ?>
 
 namespace <?php echo $namespace?>;
+
+use Lkt\QueryCaller\QueryCaller;
+
 class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
 <?php echo $traits?>
 
@@ -20,4 +24,21 @@ public function __construct($id = 0) {
     parent::__construct($id, static::GENERATED_TYPE);
 }
 <?php echo $methods?>
+/**
+* @param QueryCaller $queryCaller
+* @return <?php echo $returnSelf;?>[]
+*/
+public static function getMany(QueryCaller $queryCaller): array
+{
+return parent::getMany($queryCaller);
+}
+
+/**
+* @param QueryCaller $queryCaller
+* @return <?php echo $returnSelf;?>|null
+*/
+public static function getOne(QueryCaller $queryCaller): ?<?php echo $className; ?>
+{
+return parent::getOne($queryCaller);
+}
 }

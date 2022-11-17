@@ -17,6 +17,9 @@ class CodeMaker
             $component = $schema->getComponent();
             $instanceSettings = $schema->getInstanceSettings();
 
+            $className = $instanceSettings->getAppClass();
+            $returnSelf = '\\' . $className;
+
             $extends = $instanceSettings->hasLegalExtendClass()
                 ? $instanceSettings->getClassToBeExtended()
                 : AbstractInstance::class;
@@ -45,6 +48,7 @@ class CodeMaker
                 'traits' => $traits,
                 'namespace' => $namespace,
                 'methods' => $methods,
+                'returnSelf' => $returnSelf,
             ])->parse();
             $code = str_replace("\n", ' ', $code);
             $code = removeDuplicatedWhiteSpaces($code);

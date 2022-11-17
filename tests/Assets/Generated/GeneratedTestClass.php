@@ -415,15 +415,19 @@ class GeneratedTestClass extends \Lkt\Factory\Instantiator\Instances\AbstractIns
         return $this->_hasJsonVal('additionalSettings');
     }
 
-    /** * @param QueryCaller $queryCaller * @return \Lkt\CodeMaker\Tests\Assets\TestClass[] */
+    /** * @return \Lkt\CodeMaker\Tests\Assets\TestClass[] */
     public static function getMany(QueryCaller $queryCaller): array
     {
-        return parent::getMany($queryCaller);
+        /** @var \Lkt\CodeMaker\Tests\Assets\TestClass[] */
+        $r = parent::getMany($queryCaller);
+        return $r;
     }
 
-    /** * @param QueryCaller $queryCaller * @return \Lkt\CodeMaker\Tests\Assets\TestClass|null */
+    /** * @return \Lkt\CodeMaker\Tests\Assets\TestClass|null */
     public static function getOne(QueryCaller $queryCaller): ?GeneratedTestClass
     {
-        return parent::getOne($queryCaller);
+        /** @var \Lkt\CodeMaker\Tests\Assets\TestClass */
+        $r = parent::getOne($queryCaller);
+        return $r;
     }
 }

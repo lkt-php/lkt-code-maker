@@ -12,9 +12,25 @@ class CodeMaker
 {
     public static function generate()
     {
-        foreach (Schema::getStack() as $schema) {
+        $stack = Schema::getStack();
+        echo "Generating code...\n";
+        $n = count($stack);
+        echo "There are ({$n}) schemas \n";
+        echo "\n";
+
+        $registeredSchemas = array_keys($stack);
+        echo "All registered schemas: ";
+        foreach ($registeredSchemas as $schema) {
+            echo "-> {$schema} \n";
+        }
+        echo "\n";
+        echo "\n";
+
+        foreach ($stack as $schema) {
 
             $component = $schema->getComponent();
+            echo "Generating code for: {$component}...\n";
+
             $instanceSettings = $schema->getInstanceSettings();
 
             $className = $instanceSettings->getAppClass();
@@ -57,10 +73,13 @@ class CodeMaker
             $filePath = $instanceSettings->getGeneratedClassFullPath();
             $status = file_put_contents($filePath, $code);
             if ($status === false) {
-                echo "Could't store {$filePath}";
-                echo "Maybe an invalid path or not enough permissions";
+                echo "Could't store {$filePath}\n";
+                echo "Maybe an invalid path or not enough permissions\n";
+            } else {
+                echo "Successful storage at {$filePath}\n";
             }
-            dump($status);
+
+            echo "\n";
         }
     }
 }

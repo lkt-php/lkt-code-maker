@@ -117,6 +117,10 @@ class FieldsCodeHelper
                     $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
                 }
 
+                if ($field instanceof RelatedField) {
+                    $templateData['isSingleMode'] = $field->isSingleMode();
+                }
+
                 if ($field->isSoftTyped()) {
                     $templateData['relatedClassName'] = '';
                     $templateData['relatedReturnClass'] = '';

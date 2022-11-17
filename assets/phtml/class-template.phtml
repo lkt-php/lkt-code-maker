@@ -25,20 +25,22 @@ public function __construct($id = 0) {
 }
 <?php echo $methods?>
 /**
-* @param QueryCaller $queryCaller
 * @return <?php echo $returnSelf;?>[]
 */
 public static function getMany(QueryCaller $queryCaller): array
 {
-return parent::getMany($queryCaller);
+/** @var <?php echo $returnSelf;?>[] */
+$r = parent::getMany($queryCaller);
+return $r;
 }
 
 /**
-* @param QueryCaller $queryCaller
 * @return <?php echo $returnSelf;?>|null
 */
-public static function getOne(QueryCaller $queryCaller): ?<?php echo $className; ?>
+public static function getOne(QueryCaller $queryCaller)
 {
-return parent::getOne($queryCaller);
+/** @var <?php echo $returnSelf;?> */
+$r = parent::getOne($queryCaller);
+return $r;
 }
 }

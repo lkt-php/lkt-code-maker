@@ -54,6 +54,7 @@ class MakerTest extends TestCase
             ->addField(ForeignKeysField::define('properties')->setComponent('maker-test-component'))
             ->addField(ForeignKeyField::define('mainProperty')->setComponent('maker-test-component'))
             ->addField(RelatedField::define('relatedData')->setComponent('maker-test-component'))
+            ->addField(RelatedField::define('relatedDataSingle')->setComponent('maker-test-component')->setSingleMode())
             ->addField(RelatedKeysField::define('relatedKeysData')->setComponent('maker-test-component'))
             ->addField(PivotField::define('pivotData')->setComponent('maker-test-component'))
             ->addField(FileField::define('file'))

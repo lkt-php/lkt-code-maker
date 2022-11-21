@@ -254,6 +254,42 @@ class GeneratedTestClass extends \Lkt\Factory\Instantiator\Instances\AbstractIns
         return $this->_getRelatedInstanceFactory('maker-test-component', 'relatedData');
     }
 
+    /** @return \Lkt\QueryCaller\QueryCaller */
+    public function getRelatedDataQueryCaller()
+    {
+        return $this->_getRelatedQueryCaller('maker-test-component', 'relatedData');
+    }
+
+    /** @return \Lkt\CodeMaker\Tests\Assets\TestClass */
+    public function getRelatedDataSingle()
+    {
+        return $this->_getRelatedValSingle('maker-test-component', 'relatedDataSingle');
+    }
+
+    public function hasRelatedDataSingle(): bool
+    {
+        return $this->_hasRelatedVal('maker-test-component', 'relatedDataSingle');
+    }
+
+    /** @return \Lkt\CodeMaker\Tests\Assets\TestClass */
+    public function setRelatedDataSingleWithData(array $relatedDataSingle)
+    {
+        $this->_setRelatedValWithData('maker-test-component', 'relatedDataSingle', $relatedDataSingle);
+        return $this;
+    }
+
+    /** @return \Lkt\Factory\InstanceFactory */
+    public function getRelatedDataSingleInstanceFactory()
+    {
+        return $this->_getRelatedInstanceFactory('maker-test-component', 'relatedDataSingle');
+    }
+
+    /** @return \Lkt\QueryCaller\QueryCaller */
+    public function getRelatedDataSingleQueryCaller()
+    {
+        return $this->_getRelatedQueryCaller('maker-test-component', 'relatedDataSingle');
+    }
+
     /** @return \Lkt\CodeMaker\Tests\Assets\TestClass[] */
     public function getRelatedKeysData(): array
     {
@@ -424,7 +460,7 @@ class GeneratedTestClass extends \Lkt\Factory\Instantiator\Instances\AbstractIns
     }
 
     /** * @return \Lkt\CodeMaker\Tests\Assets\TestClass|null */
-    public static function getOne(QueryCaller $queryCaller): ?GeneratedTestClass
+    public static function getOne(QueryCaller $queryCaller)
     {
         /** @var \Lkt\CodeMaker\Tests\Assets\TestClass */
         $r = parent::getOne($queryCaller);

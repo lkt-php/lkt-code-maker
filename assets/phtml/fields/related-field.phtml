@@ -10,14 +10,12 @@
  */
 ?>
 <?php if($isSingleMode): ?>
-/** <?php echo $relatedReturnClass; ?>
-*/
+/** <?php echo $relatedReturnClass; ?> */
 public function get<?php echo $fieldMethod;?>() {
     return $this->_getRelatedValSingle('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
 <?php else: ?>
-/** <?php echo $relatedReturnClass; ?>
-*/
+/** <?php echo $relatedReturnClass; ?> */
 public function get<?php echo $fieldMethod;?>(): array {
 return $this->_getRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
@@ -25,8 +23,7 @@ return $this->_getRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
-/** @return <?php echo $returnSelf;?>
-*/
+/** @return <?php echo $returnSelf;?> */
 public function set<?php echo $fieldMethod;?>WithData(array $<?php echo $fieldName;?>)  {
     $this->_setRelatedValWithData('<?php echo $component; ?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;

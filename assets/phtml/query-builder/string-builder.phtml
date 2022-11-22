@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
+    return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
+    return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
+    return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', $values);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
+    return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', $values);
+}
+<?php endforeach; ?>

@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(float $value) {
+    return $this-><?php echo $constraint?>DecimalEqual('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(float $value) {
+    return $this-><?php echo $constraint?>DecimalNot('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThan(float $value) {
+    return $this-><?php echo $constraint?>DecimalGreaterThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(float $value) {
+    return $this-><?php echo $constraint?>DecimalLowerThan('<?php echo $column;?>', $value);
+}
+<?php endforeach; ?>

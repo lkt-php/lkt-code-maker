@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsTrue() {
+    return $this-><?php echo $constraint?>BooleanTrue('<?php echo $column;?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsFalse() {
+    return $this-><?php echo $constraint?>BooleanFalse('<?php echo $column;?>');
+}
+<?php endforeach; ?>

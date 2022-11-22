@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(int $value) {
+    return $this-><?php echo $constraint?>IntegerEqual('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(int $value) {
+    return $this-><?php echo $constraint?>IntegerNot('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThan(int $value) {
+    return $this-><?php echo $constraint?>IntegerGreaterThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(int $value) {
+    return $this-><?php echo $constraint?>IntegerLowerThan('<?php echo $column;?>', $value);
+}
+<?php /**
+public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
+    return $this-><?php echo $constraint?>IntegerIn('<?php echo $column;?>', $values);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
+    return $this-><?php echo $constraint?>IntegerNotIn('<?php echo $column;?>', $values);
+}
+ * */?>
+<?php endforeach; ?>

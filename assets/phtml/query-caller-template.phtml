@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var string $className
+ * @var string $component
+ * @var string $namespace
+ * @var string $extends
+ * @var string $implements
+ * @var string $traits
+ * @var string $methods
+ * @var string $returnSelf
+ */
+?>
+
+namespace <?php echo $namespace?>;
+
+use Lkt\QueryCaller\QueryCaller;
+use Lkt\Factory\Instantiator\Instantiator;
+
+class <?php echo $className; ?> extends QueryCaller {
+
+const COMPONENT = '<?php echo $component; ?>';
+
+public static function getCaller(): QueryCaller
+{
+    /** @var QueryCaller $caller */
+    list($caller) = Instantiator::getQueryCaller(static::COMPONENT);
+    return $caller;
+}
+
+<?php echo $methods?>
+}

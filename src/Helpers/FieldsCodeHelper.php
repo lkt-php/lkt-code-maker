@@ -112,9 +112,16 @@ class FieldsCodeHelper
                 if (Schema::exists($relatedComponent)) {
                     $relatedSchema = Schema::get($relatedComponent);
                     $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+                    $relatedQueryCaller = $relatedSchema->getInstanceSettings()->getQueryCallerFQDN();
+
                     $templateData['component'] = $relatedComponent;
                     $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
                     $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
+                    $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+
+                    if ($relatedQueryCaller) {
+                        $templateData['relatedQueryCaller'] = '\\' . $relatedQueryCaller;
+                    }
                 }
 
                 if ($field instanceof RelatedField) {

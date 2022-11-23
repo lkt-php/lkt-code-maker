@@ -6,6 +6,7 @@
  * @var string $component
  * @var string $relatedReturnClass
  * @var string $relatedClassName
+ * @var string $relatedQueryCaller
  * @var bool $isSingleMode
  */
 ?>
@@ -32,7 +33,7 @@ public function set<?php echo $fieldMethod;?>WithData(array $<?php echo $fieldNa
 public function get<?php echo $fieldMethod;?>InstanceFactory() {
     return $this->_getRelatedInstanceFactory('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
-/** @return \Lkt\QueryCaller\QueryCaller */
-public function get<?php echo $fieldMethod;?>QueryCaller() {
-    return $this->_getRelatedQueryCaller('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+/** @return <?php echo $relatedQueryCaller; ?> */
+public function get<?php echo $fieldMethod;?>QueryCaller(): <?php echo $relatedQueryCaller; ?> {
+    return $this->_getRelatedCustomQueryCaller('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }

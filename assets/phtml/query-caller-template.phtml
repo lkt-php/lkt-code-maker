@@ -8,6 +8,7 @@
  * @var string $traits
  * @var string $methods
  * @var string $returnSelf
+ * @var string $queryCaller
  */
 ?>
 
@@ -15,15 +16,20 @@ namespace <?php echo $namespace?>;
 
 use Lkt\QueryCaller\QueryCaller;
 use Lkt\Factory\Instantiator\Instantiator;
+use Lkt\Factory\Schemas\Schema;
 
 class <?php echo $className; ?> extends QueryCaller {
 
 const COMPONENT = '<?php echo $component; ?>';
 
-public static function getCaller(): QueryCaller
+/** @return <?php echo $queryCaller;?> */
+public static function getCaller()
 {
-    /** @var QueryCaller $caller */
-    list($caller) = Instantiator::getQueryCaller(static::COMPONENT);
+    $schema = Schema::get(static::COMPONENT);
+
+    /** @var <?php echo $queryCaller;?> $caller */
+    $caller = static::table($schema->getTable());
+    Instantiator::prepareQueryCaller(static::COMPONENT, $caller);
     return $caller;
 }
 

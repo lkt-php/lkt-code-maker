@@ -9,6 +9,9 @@
 public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
     return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $value) {
+    return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', $value);
+}
 public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
     return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
 }

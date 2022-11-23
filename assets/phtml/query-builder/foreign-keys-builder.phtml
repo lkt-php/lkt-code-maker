@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Contains($value) {
+    return $this-><?php echo $constraint?>ForeignKeysContains('<?php echo $column;?>', $value);
+}
+<?php endforeach; ?>

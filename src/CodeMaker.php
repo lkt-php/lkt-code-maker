@@ -56,6 +56,17 @@ class CodeMaker
 
 
             $methods = FieldsCodeHelper::makeFieldsCode($schema);
+
+
+            $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
+
+            $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+
+            if (!$relatedQueryCaller) {
+                $relatedQueryCaller = 'Lkt\QueryCaller\QueryCaller';
+            }
+            $relatedQueryCaller = '\\' . $relatedQueryCaller;
+
             $code = Template::file(__DIR__ . '/../assets/phtml/class-template.phtml')->setData([
                 'component' => $component,
                 'className' => $instanceSettings->getClassNameForGeneratedClass(),
@@ -65,6 +76,7 @@ class CodeMaker
                 'namespace' => $namespace,
                 'methods' => $methods,
                 'returnSelf' => $returnSelf,
+                'queryCaller' => $relatedQueryCaller,
             ])->parse();
             $code = str_replace("\n", ' ', $code);
             $code = removeDuplicatedWhiteSpaces($code);

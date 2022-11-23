@@ -71,6 +71,14 @@ class FieldsQueryCallerHelper
                     ->parse();
                 continue;
             }
+
+
+            if ($field instanceof ForeignKeysField) {
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/foreign-keys-builder.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
 //
 //            if ($field instanceof DateTimeField || $field instanceof UnixTimeStampField) {
 //                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/datetime-field.phtml')

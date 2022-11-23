@@ -35,6 +35,10 @@ class QueryCallerMaker
             $instanceSettings = $schema->getInstanceSettings();
 
             $className = $instanceSettings->getQueryCallerClassName();
+            if ($className === '') {
+                echo "Component without QueryCaller: {$component}...\n";
+                continue;
+            }
             $returnSelf = '\\' . $className;
 
             $extends = $instanceSettings->hasLegalExtendClass()
@@ -55,6 +59,15 @@ class QueryCallerMaker
 
             $namespace = $instanceSettings->getNamespaceForGeneratedClass();
 
+            $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
+
+            $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+
+            if (!$relatedQueryCaller) {
+                $relatedQueryCaller = 'Lkt\QueryCaller\QueryCaller';
+            }
+            $relatedQueryCaller = '\\' . $relatedQueryCaller;
+
             $methods = FieldsQueryCallerHelper::makeFieldsCode($schema);
             $code = Template::file(__DIR__ . '/../assets/phtml/query-caller-template.phtml')->setData([
                 'component' => $component,
@@ -63,6 +76,7 @@ class QueryCallerMaker
                 'namespace' => $namespace,
                 'methods' => $methods,
                 'returnSelf' => $returnSelf,
+                'queryCaller' => $relatedQueryCaller,
             ])->parse();
             $code = str_replace("\n", ' ', $code);
             $code = removeDuplicatedWhiteSpaces($code);

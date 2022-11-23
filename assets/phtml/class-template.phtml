@@ -8,39 +8,51 @@
  * @var string $traits
  * @var string $methods
  * @var string $returnSelf
+ * @var string $queryCaller
  */
 ?>
 
 namespace <?php echo $namespace?>;
 
 use Lkt\QueryCaller\QueryCaller;
+use Lkt\Factory\Instantiator\Instantiator;
 
 class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
-<?php echo $traits?>
+    <?php echo $traits?>
 
-const GENERATED_TYPE = '<?php echo $component; ?>';
+    const GENERATED_TYPE = '<?php echo $component; ?>';
 
-public function __construct($id = 0) {
-    parent::__construct($id, static::GENERATED_TYPE);
-}
-<?php echo $methods?>
-/**
-* @return <?php echo $returnSelf;?>[]
-*/
-public static function getMany(QueryCaller $queryCaller): array
-{
-/** @var <?php echo $returnSelf;?>[] */
-$r = parent::getMany($queryCaller);
-return $r;
-}
+    public function __construct($id = 0) {
+        parent::__construct($id, static::GENERATED_TYPE);
+    }
+    <?php echo $methods?>
+    /**
+    * @return <?php echo $returnSelf;?>[]
+    */
+    public static function getMany(QueryCaller $queryCaller): array
+    {
+        /** @var <?php echo $returnSelf;?>[] */
+        $r = parent::getMany($queryCaller);
+        return $r;
+    }
 
-/**
-* @return <?php echo $returnSelf;?>|null
-*/
-public static function getOne(QueryCaller $queryCaller)
-{
-/** @var <?php echo $returnSelf;?> */
-$r = parent::getOne($queryCaller);
-return $r;
-}
+    /**
+    * @return <?php echo $returnSelf;?>|null
+    */
+    public static function getOne(QueryCaller $queryCaller)
+    {
+        /** @var <?php echo $returnSelf;?> */
+        $r = parent::getOne($queryCaller);
+        return $r;
+    }
+
+    /** @return <?php echo $queryCaller;?> */
+    public static function getQueryCaller()
+    {
+        /**
+        * @var QueryCaller $caller
+        */
+        list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
+        return $caller;
+    }
 }

@@ -15,7 +15,16 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(float $val
 public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThan(float $value) {
     return $this-><?php echo $constraint?>DecimalGreaterThan('<?php echo $column;?>', $value);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterOrEqualThan(float $value) {
+    return $this-><?php echo $constraint?>DecimalGreaterOrEqualThan('<?php echo $column;?>', $value);
+}
 public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(float $value) {
     return $this-><?php echo $constraint?>DecimalLowerThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerOrEqualThan(float $value) {
+    return $this-><?php echo $constraint?>DecimalLowerOrEqualThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Between(float $from, float $to) {
+    return $this-><?php echo $constraint?>DecimalBetween('<?php echo $column;?>', $from, $to);
 }
 <?php endforeach; ?>

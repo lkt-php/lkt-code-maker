@@ -15,8 +15,17 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(int $value
 public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThan(int $value) {
     return $this-><?php echo $constraint?>IntegerGreaterThan('<?php echo $column;?>', $value);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterOrEqualThan(int $value) {
+    return $this-><?php echo $constraint?>IntegerGreaterOrEqualThan('<?php echo $column;?>', $value);
+}
 public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(int $value) {
     return $this-><?php echo $constraint?>IntegerLowerThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerOrEqualThan(int $value) {
+    return $this-><?php echo $constraint?>IntegerLowerOrEqualThan('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Between(int $from, int $to) {
+    return $this-><?php echo $constraint?>IntegerBetween('<?php echo $column;?>', $from, $to);
 }
 <?php /**
 public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {

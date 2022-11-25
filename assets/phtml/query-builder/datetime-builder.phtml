@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Between(string $from, string $to) {
+    return $this-><?php echo $constraint?>DatetimeBetween('<?php echo $column;?>', $from, $to);
+}
+<?php endforeach; ?>

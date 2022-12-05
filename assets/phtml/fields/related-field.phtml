@@ -20,6 +20,16 @@ public function get<?php echo $fieldMethod;?>() {
 public function get<?php echo $fieldMethod;?>(): array {
 return $this->_getRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
+/** <?php echo $relatedReturnClass; ?> */
+public function get<?php echo $fieldMethod;?>Page(int $page, Where $where = null): array {
+    return $this->_getRelatedPage('<?php echo $component; ?>', '<?php echo $fieldName;?>', $page, $where);
+}
+public function get<?php echo $fieldMethod;?>Count(string $countableField = '', Where $where = null): int {
+    return $this->_getRelatedCount('<?php echo $component; ?>', '<?php echo $fieldName;?>', $countableField, $where);
+}
+public function get<?php echo $fieldMethod;?>AmountOfPages(string $countableField = '', Where $where = null): int {
+    return $this->_getRelatedAmountOfPages('<?php echo $component; ?>', '<?php echo $fieldName;?>', $countableField, $where);
+}
 <?php endif ?>
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasRelatedVal('<?php echo $component; ?>', '<?php echo $fieldName;?>');

@@ -10,6 +10,36 @@
 public static function <?php echo $fieldMethod;?>Between(string $from, string $to) {
     return static::datetimeBetween('<?php echo $column;?>', $from, $to);
 }
+public static function <?php echo $fieldMethod;?>Equal(string $value) {
+    return static::datetimeEqual('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>Not(string $value) {
+    return static::datetimeNot('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>GreaterOrEqualThan(string $value, AbstractInterval $interval = null) {
+    return static::datetimeGreaterOrEqualThan('<?php echo $column;?>', $value, $interval);
+}
+public static function <?php echo $fieldMethod;?>GreaterOrEqualThanNow(AbstractInterval $interval = null) {
+    return static::datetimeGreaterOrEqualThanNow('<?php echo $column;?>', $interval);
+}
+public static function <?php echo $fieldMethod;?>GreaterThan(string $value, AbstractInterval $interval = null) {
+    return static::datetimeGreaterThan('<?php echo $column;?>', $value, $interval);
+}
+public static function <?php echo $fieldMethod;?>GreaterThanNow(AbstractInterval $interval = null) {
+    return static::datetimeGreaterThanNow('<?php echo $column;?>', $interval);
+}
+public static function <?php echo $fieldMethod;?>LowerOrEqualThan(string $value, AbstractInterval $interval = null) {
+    return static::datetimeLowerOrEqualThan('<?php echo $column;?>', $value, $interval);
+}
+public static function <?php echo $fieldMethod;?>LowerOrEqualThanNow(AbstractInterval $interval = null) {
+    return static::datetimeLowerOrEqualThanNow('<?php echo $column;?>', $interval);
+}
+public static function <?php echo $fieldMethod;?>LowerThan(string $value, AbstractInterval $interval = null) {
+    return static::datetimeLowerThan('<?php echo $column;?>', $value, $interval);
+}
+public static function <?php echo $fieldMethod;?>LowerThanNow(AbstractInterval $interval = null) {
+    return static::datetimeLowerThanNow('<?php echo $column;?>', $interval);
+}
 <?php if($canBeNull): ?>
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>IsNull() {

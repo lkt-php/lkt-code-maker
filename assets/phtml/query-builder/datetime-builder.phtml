@@ -10,6 +10,36 @@
 public function <?php echo $constraint?><?php echo $fieldMethod;?>Between(string $from, string $to) {
     return $this-><?php echo $constraint?>DatetimeBetween('<?php echo $column;?>', $from, $to);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
+    return $this-><?php echo $constraint?>DatetimeEqual('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $value) {
+    return $this-><?php echo $constraint?>DatetimeNot('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterOrEqualThan(string $value, AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeGreaterOrEqualThan('<?php echo $column;?>', $value, $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterOrEqualThanNow(AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeGreaterOrEqualThanNow('<?php echo $column;?>', $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThan(string $value, AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeGreaterThan('<?php echo $column;?>', $value, $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>GreaterThanNow(AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeGreaterThanNow('<?php echo $column;?>', $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerOrEqualThan(string $value, AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeLowerOrEqualThan('<?php echo $column;?>', $value, $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerOrEqualThanNow(AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeLowerOrEqualThanNow('<?php echo $column;?>', $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(string $value, AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeLowerThan('<?php echo $column;?>', $value, $interval);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThanNow(AbstractInterval $interval = null) {
+    return $this-><?php echo $constraint?>DatetimeLowerThanNow('<?php echo $column;?>', $interval);
+}
 <?php if($canBeNull): ?>
 public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
     return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');

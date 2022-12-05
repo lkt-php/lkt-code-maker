@@ -1,0 +1,54 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ */
+?>
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Equal(float $value) {
+    return static::decimalEqual('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Not(float $value) {
+    return static::decimalNot('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>GreaterThan(float $value) {
+    return static::decimalGreaterThan('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>GreaterOrEqualThan(float $value) {
+    return static::decimalGreaterOrEqualThan('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>LowerThan(float $value) {
+    return static::decimalLowerThan('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>LowerOrEqualThan(float $value) {
+    return static::decimalLowerOrEqualThan('<?php echo $column;?>', $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Between(float $from, float $to) {
+    return static::decimalBetween('<?php echo $column;?>', $from, $to);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>In(array $values) {
+    return static::decimalIn('<?php echo $column;?>', $values);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>NotIn(array $values) {
+    return static::decimalNotIn('<?php echo $column;?>', $values);
+}
+<?php if($canBeNull): ?>
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsNull() {
+    return static::isNull('<?php echo $column;?>');
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsNotNull() {
+    return static::isNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>

@@ -3,6 +3,7 @@
  * @var string $column
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var bool $canBeNull
  */
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
@@ -15,10 +16,33 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $va
 public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
     return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotLike(string $value) {
+    return $this-><?php echo $constraint?>StringNotLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>BeginsLike(string $value) {
+    return $this-><?php echo $constraint?>StringBeginsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotBeginsLike(string $value) {
+    return $this-><?php echo $constraint?>StringNotBeginsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>EndsLike(string $value) {
+    return $this-><?php echo $constraint?>StringEndsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotEndsLike(string $value) {
+    return $this-><?php echo $constraint?>StringNotEndsLike('<?php echo $column;?>', $value);
+}
 public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
     return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', $values);
 }
 public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
     return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', $values);
 }
+<?php if($canBeNull): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
+    return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
+    return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>
 <?php endforeach; ?>

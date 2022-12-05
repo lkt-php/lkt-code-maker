@@ -3,6 +3,7 @@
  * @var string $column
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var bool $canBeNull
  */
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
@@ -27,6 +28,20 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerOrEqualTh
 public function <?php echo $constraint?><?php echo $fieldMethod;?>Between(int $from, int $to) {
     return $this-><?php echo $constraint?>IntegerBetween('<?php echo $column;?>', $from, $to);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
+    return $this-><?php echo $constraint?>IntegerIn('<?php echo $column;?>', $values);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
+    return $this-><?php echo $constraint?>IntegerNotIn('<?php echo $column;?>', $values);
+}
+<?php if($canBeNull): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
+    return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
+    return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>
 <?php /**
 public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
     return $this-><?php echo $constraint?>IntegerIn('<?php echo $column;?>', $values);

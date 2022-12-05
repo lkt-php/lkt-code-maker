@@ -3,6 +3,7 @@
  * @var string $column
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var bool $canBeNull
  */
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
@@ -12,4 +13,12 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>IsTrue() {
 public function <?php echo $constraint?><?php echo $fieldMethod;?>IsFalse() {
     return $this-><?php echo $constraint?>BooleanFalse('<?php echo $column;?>');
 }
+<?php if($canBeNull): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
+    return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
+    return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>
 <?php endforeach; ?>

@@ -2,11 +2,10 @@
 
 namespace Lkt\CodeMaker\Tests;
 
-use Lkt\CodeMaker\CodeMaker;
 use Lkt\CodeMaker\QueryCallerMaker;
-use Lkt\CodeMaker\Tests\Assets\Generated\TestQueryCaller;
+use Lkt\CodeMaker\Tests\Assets\Generated\TestWhere;
 use Lkt\CodeMaker\Tests\Assets\TestClass;
-use Lkt\Factory\Instantiator\Conversions\RawResultsToInstanceConverter;
+use Lkt\CodeMaker\WhereMaker;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\ColorField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
@@ -31,9 +30,6 @@ use PHPUnit\Framework\TestCase;
 
 class QueryCallerMakerTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testTemplateEngine()
     {
         $component = 'maker-test-component';
@@ -44,6 +40,7 @@ class QueryCallerMakerTest extends TestCase
                     ->setNamespaceForGeneratedClass('Lkt\CodeMaker\Tests\Assets\Generated')
                     ->setWhereStoreGeneratedClass(__DIR__ . '/Assets/Generated')
                     ->setQueryCallerClassName('TestQueryCaller')
+                    ->setWhereClassName('TestWhere')
                 )
             ->addField(IdField::define('id'))
             ->addField(StringField::define('name'))
@@ -67,14 +64,13 @@ class QueryCallerMakerTest extends TestCase
             ->addField(JSONField::define('additionalSettings')->setIsAssoc())
         );
 
-
+        WhereMaker::generate();
         QueryCallerMaker::generate();
 
-//        TestQueryCaller::caller();
+        $where = TestWhere::getEmpty()->andIdBetween(1, 5)->andNameLike('james')->andNameNot('james.');
+        $this->assertEquals("(id BETWEEN '1' AND '5' AND name LIKE '%james%' AND name!='james.')", $where->whereConstraintsToString());
 
-//        $this->assertEquals(date('Y-m-d'), $instance->getMoment());
-//        dd($instance);
-
-//        $this->assertTrue(false);
+        $whereStatic = TestWhere::idBetween(1, 5)->andNameLike('james')->andNameNot('james.');
+        $this->assertEquals("(id BETWEEN '1' AND '5' AND name LIKE '%james%' AND name!='james.')", $whereStatic->whereConstraintsToString());
     }
 }

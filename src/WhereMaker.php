@@ -9,12 +9,12 @@ use Lkt\Factory\Schemas\Schema;
 use Lkt\Templates\Template;
 use function Lkt\Tools\Strings\removeDuplicatedWhiteSpaces;
 
-class QueryCallerMaker
+class WhereMaker
 {
     public static function generate()
     {
         $stack = Schema::getStack();
-        echo "Generating query caller...\n";
+        echo "Generating where...\n";
         $n = count($stack);
         echo "There are ({$n}) schemas \n";
         echo "\n";
@@ -30,13 +30,13 @@ class QueryCallerMaker
         foreach ($stack as $schema) {
 
             $component = $schema->getComponent();
-            echo "Generating query caller for: {$component}...\n";
+            echo "Generating where for: {$component}...\n";
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getQueryCallerClassName();
+            $className = $instanceSettings->getWhereClassName();
             if ($className === '') {
-                echo "Component without QueryCaller: {$component}...\n";
+                echo "Component without Where: {$component}...\n";
                 continue;
             }
             $returnSelf = '\\' . $className;
@@ -47,32 +47,21 @@ class QueryCallerMaker
 
             $extends = '\\'. $extends;
 
-            $implements = $instanceSettings->getImplementedInterfacesAsString();
-            if ($implements !== ''){
-                $implements = "implements {$implements};";
-            }
-
-            $traits = $instanceSettings->getUsedTraitsAsString();
-            if ($traits !== ''){
-                $traits = "use {$traits};";
-            }
-
             $namespace = $instanceSettings->getNamespaceForGeneratedClass();
 
-            $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
+            $relatedQueryCaller = $schema->getInstanceSettings()->getWhereFQDN();
 
-            $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+            $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\Where';
 
             if (!$relatedQueryCaller) {
-                $relatedQueryCaller = 'Lkt\QueryCaller\QueryCaller';
+                $relatedQueryCaller = 'Lkt\QueryBuilding\Where';
             }
             $relatedQueryCaller = '\\' . $relatedQueryCaller;
 
-            $methods = FieldsQueryCallerHelper::makeFieldsCode($schema);
-            $code = Template::file(__DIR__ . '/../assets/phtml/query-caller-template.phtml')->setData([
+            $methods = FieldsQueryCallerHelper::makeFieldsCode($schema, true);
+            $code = Template::file(__DIR__ . '/../assets/phtml/where-template.phtml')->setData([
                 'component' => $component,
                 'className' => $className,
-                'traits' => $traits,
                 'namespace' => $namespace,
                 'methods' => $methods,
                 'returnSelf' => $returnSelf,
@@ -82,7 +71,7 @@ class QueryCallerMaker
             $code = removeDuplicatedWhiteSpaces($code);
             $code = '<?php ' .$code;
 
-            $filePath = $instanceSettings->getQueryCallerFullPath();
+            $filePath = $instanceSettings->getWhereFullPath();
             $status = file_put_contents($filePath, $code);
             if ($status === false) {
                 echo "Could't store {$filePath}\n";

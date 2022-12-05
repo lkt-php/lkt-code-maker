@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ */
+?>
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsTrue() {
+    return static::booleanTrue('<?php echo $column;?>');
+}
+    /** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsFalse() {
+    return static::booleanFalse('<?php echo $column;?>');
+}
+<?php if($canBeNull): ?>
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsNull() {
+    return static::isNull('<?php echo $column;?>');
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>IsNotNull() {
+    return static::isNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>

@@ -30,7 +30,7 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     /**
     * @return <?php echo $returnSelf;?>[]
     */
-    public static function getMany(QueryCaller $queryCaller): array
+    public static function getMany(QueryCaller $queryCaller = null): array
     {
         /** @var <?php echo $returnSelf;?>[] */
         $r = parent::getMany($queryCaller);
@@ -40,7 +40,7 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     /**
     * @return <?php echo $returnSelf;?>|null
     */
-    public static function getOne(QueryCaller $queryCaller)
+    public static function getOne(QueryCaller $queryCaller = null)
     {
         /** @var <?php echo $returnSelf;?> */
         $r = parent::getOne($queryCaller);
@@ -55,5 +55,15 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
         */
         list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
         return $caller;
+    }
+
+    /**
+    * @return <?php echo $returnSelf;?>[]
+    */
+    public static function getPage(int $page, QueryCaller $queryCaller = null): array
+    {
+        /** @var <?php echo $returnSelf;?>[] */
+        $r = parent::getPage($page, $queryCaller);
+        return $r;
     }
 }

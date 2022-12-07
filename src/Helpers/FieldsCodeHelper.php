@@ -11,11 +11,13 @@ use Lkt\Factory\Schemas\Fields\FloatField;
 use Lkt\Factory\Schemas\Fields\ForeignKeyField;
 use Lkt\Factory\Schemas\Fields\ForeignKeysField;
 use Lkt\Factory\Schemas\Fields\HTMLField;
+use Lkt\Factory\Schemas\Fields\IntegerChoiceField;
 use Lkt\Factory\Schemas\Fields\IntegerField;
 use Lkt\Factory\Schemas\Fields\JSONField;
 use Lkt\Factory\Schemas\Fields\PivotField;
 use Lkt\Factory\Schemas\Fields\RelatedField;
 use Lkt\Factory\Schemas\Fields\RelatedKeysField;
+use Lkt\Factory\Schemas\Fields\StringChoiceField;
 use Lkt\Factory\Schemas\Fields\StringField;
 use Lkt\Factory\Schemas\Fields\UnixTimeStampField;
 use Lkt\Factory\Schemas\Schema;
@@ -64,14 +66,26 @@ class FieldsCodeHelper
                 continue;
             }
 
-            if ($field instanceof IntegerField) {
+            if ($field instanceof IntegerChoiceField) {
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-choice-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+            elseif ($field instanceof IntegerField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;
             }
 
-            if ($field instanceof StringField || $field instanceof HTMLField) {
+            if ($field instanceof StringChoiceField) {
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+            elseif ($field instanceof StringField || $field instanceof HTMLField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-field.phtml')
                     ->setData($templateData)
                     ->parse();

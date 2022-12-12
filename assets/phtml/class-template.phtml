@@ -51,9 +51,19 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     public static function getQueryCaller()
     {
         /**
-        * @var QueryCaller $caller
+        * @var <?php echo $queryCaller;?> $caller
         */
         list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
+        return $caller;
+    }
+
+    /** @return <?php echo $queryCaller;?> */
+    public static function getFilteredQueryCaller(array $data, array $processRules = null, array $filterRules = null)
+    {
+        /**
+        * @var <?php echo $queryCaller;?> $caller
+        */
+        list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE, $data, $processRules, $filterRules);
         return $caller;
     }
 

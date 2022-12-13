@@ -2,6 +2,8 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
+use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
@@ -132,13 +134,42 @@ class FieldsQueryCallerHelper
                 }
                 continue;
             }
-//
-//            if ($field instanceof DateTimeField || $field instanceof UnixTimeStampField) {
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/datetime-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
-//                continue;
-//            }
+
+            if ($field instanceof StringEqualComputedField) {
+                $templateData['canBeNull'] =  false;
+                $relatedField = $schema->getField($field->getField());
+                $templateData['column'] = $relatedField->getColumn();
+                $templateData['value'] = $field->getValue();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/string-equal-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+
+                if ($includeStatic) {
+                    $templateData['fieldMethod'] = $field->getName();
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/string-equal-computed-field-static.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
+                continue;
+            }
+
+            if ($field instanceof StringInComputedField) {
+                $templateData['canBeNull'] =  false;
+                $relatedField = $schema->getField($field->getField());
+                $templateData['column'] = $relatedField->getColumn();
+                $templateData['value'] = "'".implode("','", $field->getValue())."'";
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/string-in-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+
+                if ($includeStatic) {
+                    $templateData['fieldMethod'] = $field->getName();
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/string-in-computed-field-static.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
+                continue;
+            }
         }
 
         return implode("\n", $methods);

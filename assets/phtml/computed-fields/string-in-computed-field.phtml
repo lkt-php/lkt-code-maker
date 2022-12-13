@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $getter
+ * @var string $value
+ */
+?>
+public function <?php echo $fieldName;?>() :bool {
+return in_array($this-><?php echo $getter; ?>(), [<?php echo $value; ?>], true);
+}

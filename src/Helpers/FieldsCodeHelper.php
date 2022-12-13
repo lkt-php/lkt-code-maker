@@ -2,6 +2,8 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
+use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\ColorField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
@@ -203,6 +205,26 @@ class FieldsCodeHelper
             if ($field instanceof JSONField) {
                 $templateData['isAssoc'] = $field->isAssoc();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/json-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof StringEqualComputedField) {
+                $relatedField = $schema->getField($field->getField());
+                $templateData['getter'] = $relatedField->getGetterForComputed();
+                $templateData['value'] = $field->getValue();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-equal-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof StringInComputedField) {
+                $relatedField = $schema->getField($field->getField());
+                $templateData['getter'] = $relatedField->getGetterForComputed();
+                $templateData['value'] = "'".implode("','", $field->getValue())."'";
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-in-computed-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $value
+ * @var bool $canBeNull
+ */
+?>
+public static function <?php echo $fieldMethod;?>() {
+return static::stringEqual('<?php echo $column;?>', '<?php echo $value;?>');
+}

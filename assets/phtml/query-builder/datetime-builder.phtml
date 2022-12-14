@@ -40,6 +40,24 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThan(stri
 public function <?php echo $constraint?><?php echo $fieldMethod;?>LowerThanNow(AbstractInterval $interval = null) {
     return $this-><?php echo $constraint?>DatetimeLowerThanNow('<?php echo $column;?>', $interval);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
+    return $this-><?php echo $constraint?>DatetimeLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotLike(string $value) {
+    return $this-><?php echo $constraint?>DatetimeNotLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>BeginsLike(string $value) {
+    return $this-><?php echo $constraint?>DatetimeBeginsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotBeginsLike(string $value) {
+    return $this-><?php echo $constraint?>DatetimeNotBeginsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>EndsLike(string $value) {
+    return $this-><?php echo $constraint?>DatetimeEndsLike('<?php echo $column;?>', $value);
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>NotEndsLike(string $value) {
+    return $this-><?php echo $constraint?>DatetimeNotEndsLike('<?php echo $column;?>', $value);
+}
 <?php if($canBeNull): ?>
 public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
     return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');

@@ -40,6 +40,24 @@ public static function <?php echo $fieldMethod;?>LowerThan(string $value, Abstra
 public static function <?php echo $fieldMethod;?>LowerThanNow(AbstractInterval $interval = null) {
     return static::datetimeLowerThanNow('<?php echo $column;?>', $interval);
 }
+public static function <?php echo $fieldMethod;?>Like(string $value) {
+    return static::datetimeLike('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>NotLike(string $value) {
+    return static::datetimeNotLike('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>BeginsLike(string $value) {
+    return static::datetimeBeginsLike('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>NotBeginsLike(string $value) {
+    return static::datetimeNotBeginsLike('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>EndsLike(string $value) {
+    return static::datetimeEndsLike('<?php echo $column;?>', $value);
+}
+public static function <?php echo $fieldMethod;?>NotEndsLike(string $value) {
+    return static::datetimeNotEndsLike('<?php echo $column;?>', $value);
+}
 <?php if($canBeNull): ?>
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>IsNull() {

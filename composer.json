@@ -2,18 +2,18 @@
   "name": "lkt/code-maker",
   "description": "LKT Code maker",
   "type": "library",
-  "version": "1.0.16",
+  "version": "2.0.0",
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=8.1.0",
     "cocur/slugify": "^4.2",
-    "lkt/factory-schemas": "^1.0",
-    "lkt/factory-instantiator": "^1.0",
-    "lkt/templates": "^1.2",
-    "lkt/commander": "^1.0"
+    "lkt/factory-schemas": "^2.0",
+    "lkt/factory-instantiator": "^2.0",
+    "lkt/templates": "^2.0",
+    "lkt/commander": "^2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.5.20",
-    "symfony/var-dumper": "^5.0"
+    "phpunit/phpunit": "^9.5",
+    "symfony/var-dumper": "^6.2"
   },
   "license": "MIT",
   "autoload": {

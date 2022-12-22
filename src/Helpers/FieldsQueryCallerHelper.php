@@ -18,7 +18,7 @@ use Lkt\Templates\Template;
 
 class FieldsQueryCallerHelper
 {
-    public static function makeFieldsCode(Schema $schema, bool $includeStatic = false)
+    public static function makeFieldsCode(Schema $schema, bool $includeStatic = false): string
     {
         $instanceSettings = $schema->getInstanceSettings();
 

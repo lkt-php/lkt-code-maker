@@ -27,7 +27,7 @@ use Lkt\Templates\Template;
 
 class FieldsCodeHelper
 {
-    public static function makeFieldsCode(Schema $schema)
+    public static function makeFieldsCode(Schema $schema): string
     {
         $instanceSettings = $schema->getInstanceSettings();
 

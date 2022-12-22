@@ -11,7 +11,7 @@ use function Lkt\Tools\Strings\removeDuplicatedWhiteSpaces;
 
 class WhereMaker
 {
-    public static function generate()
+    public static function generate(): void
     {
         $stack = Schema::getStack();
         echo "Generating where...\n";

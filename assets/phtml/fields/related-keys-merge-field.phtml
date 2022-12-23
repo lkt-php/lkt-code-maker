@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ */
+?>
+public function get<?php echo $fieldMethod;?>(): array {
+    return $this->_getRelatedKeysMergeVal('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Page(int $page, Where $where = null): array {
+    return $this->_getRelatedKeysMergePage('<?php echo $fieldName;?>', $page, $where);
+}
+public function get<?php echo $fieldMethod;?>Raw(): array {
+    return $this->_getRelatedKeysMergeRaw('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>RawPage(int $page, Where $where = null): array {
+return $this->_getRelatedKeysMergeRawPage('<?php echo $fieldName;?>', $page, $where);
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasRelatedKeysMergedVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>Raw() :bool {
+    return $this->_hasRelatedKeysMergedRaw('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Count(Where $where = null): int {
+    return $this->_getRelatedKeysMergedCount('<?php echo $fieldName;?>', $where);
+}
+public function get<?php echo $fieldMethod;?>AmountOfPages(Where $where = null): int {
+    return $this->_getRelatedKeysMergedAmountOfPages('<?php echo $fieldName;?>', $where);
+}

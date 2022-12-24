@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $getter
+ * @var int $min
+ * @var int $max
+ */
+?>
+public function <?php echo $fieldName;?>() :bool {
+return strlen($this-><?php echo $getter; ?>()) >= <?php echo $min; ?> && strlen($this-><?php echo $getter; ?>()) <= <?php echo $max; ?>;
+}

@@ -2,6 +2,9 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\ComputedFields\StringAboveMinLengthComputedField;
+use Lkt\Factory\Schemas\ComputedFields\StringBelowMaxLengthComputedField;
+use Lkt\Factory\Schemas\ComputedFields\StringBetweenMinAndMaxLengthComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
@@ -233,6 +236,38 @@ class FieldsCodeHelper
                 $templateData['getter'] = $relatedField->getGetterForComputed();
                 $templateData['value'] = "'".implode("','", $field->getValue())."'";
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-in-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof StringAboveMinLengthComputedField) {
+                $relatedField = $schema->getField($field->getField());
+                $templateData['getter'] = $relatedField->getGetterForComputed();
+                $templateData['value'] = $field->getValue();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-above-min-length-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof StringBelowMaxLengthComputedField) {
+                $relatedField = $schema->getField($field->getField());
+                $templateData['getter'] = $relatedField->getGetterForComputed();
+                $templateData['value'] = $field->getValue();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-below-max-length-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof StringBetweenMinAndMaxLengthComputedField) {
+                $relatedField = $schema->getField($field->getField());
+                $templateData['getter'] = $relatedField->getGetterForComputed();
+                $value = $field->getValue();
+                $templateData['min'] = $value[0];
+                $templateData['max'] = $value[1];
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-between-min-and-max-length-computed-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

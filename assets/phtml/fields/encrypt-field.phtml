@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $hashMode
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :string {
+    return $this->_getEncryptVal('<?php echo $fieldName;?>');
+}
+<?php if(!$hashMode): ?>
+public function get<?php echo $fieldMethod;?>Decrypted() :string {
+    return $this->_getDecryptedVal('<?php echo $fieldName;?>');
+}
+<?php endif; ?>
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasEncryptVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(string $<?php echo $fieldName;?>)  {
+    $this->_setEncryptVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

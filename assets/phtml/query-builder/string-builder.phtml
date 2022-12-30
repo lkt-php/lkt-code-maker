@@ -4,6 +4,8 @@
  * @var string $fieldMethod
  * @var string $returnSelf
  * @var bool $canBeNull
+ * @var string[] $options
+ * @var string[] $optionsMethods
  */
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
@@ -44,5 +46,15 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
 public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
     return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
 }
+<?php endif; ?>
+<?php if($optionsMethods): ?>
+<?php foreach ($optionsMethods as $i => $option): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
+    return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
+    return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+}
+<?php endforeach; ?>
 <?php endif; ?>
 <?php endforeach; ?>

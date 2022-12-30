@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
+    $value = \Lkt\Factory\Instantiator\Encrypt\EncryptFieldHelper::autoEncryptSchemaFieldValue(static::COMPONENT, '<?php echo $column;?>', $value);
+    return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
+}
+<?php if($canBeNull): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
+    return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
+}
+public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
+    return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
+}
+<?php endif; ?>
+<?php endforeach; ?>

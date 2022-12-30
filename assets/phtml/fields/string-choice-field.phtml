@@ -3,6 +3,8 @@
  * @var string $fieldName
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var string[] $options
+ * @var string[] $optionsMethods
  */
 ?>
 public function get<?php echo $fieldMethod;?>() :string {
@@ -17,3 +19,14 @@ public function set<?php echo $fieldMethod;?>(string $<?php echo $fieldName;?>) 
     $this->_setStringChoiceVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;
 }
+<?php foreach ($optionsMethods as $i => $option): ?>
+public function <?php echo lcfirst($fieldMethod);?>Is<?php echo $option; ?>() :bool {
+    return $this->_getStringChoiceVal('<?php echo $fieldName;?>') === '<?php echo $options[$i]; ?>';
+}
+/** @return <?php echo $returnSelf;?>
+*/
+public function set<?php echo $fieldMethod;?><?php echo $option; ?>()  {
+    $this->_setStringChoiceVal('<?php echo $fieldName;?>', '<?php echo $options[$i];?>');
+    return $this;
+}
+<?php endforeach; ?>

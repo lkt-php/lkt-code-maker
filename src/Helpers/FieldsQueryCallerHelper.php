@@ -7,11 +7,13 @@ use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
+use Lkt\Factory\Schemas\Fields\EncryptField;
 use Lkt\Factory\Schemas\Fields\FloatField;
 use Lkt\Factory\Schemas\Fields\ForeignKeyField;
 use Lkt\Factory\Schemas\Fields\ForeignKeysField;
 use Lkt\Factory\Schemas\Fields\HTMLField;
 use Lkt\Factory\Schemas\Fields\IntegerField;
+use Lkt\Factory\Schemas\Fields\StringChoiceField;
 use Lkt\Factory\Schemas\Fields\StringField;
 use Lkt\Factory\Schemas\Schema;
 use Lkt\Templates\Template;
@@ -58,6 +60,18 @@ class FieldsQueryCallerHelper
 
             if ($field instanceof StringField || $field instanceof HTMLField || $field instanceof EmailField) {
                 $templateData['canBeNull'] =  $field->canBeNull();
+
+                if ($field instanceof StringChoiceField) {
+                    $options = $field->getAllowedOptions();
+
+                    $optionsMethods = array_map(function ($option) {
+                        return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
+                    }, $options);
+
+                    $templateData['options'] = $options;
+                    $templateData['optionsMethods'] = $optionsMethods;
+                }
+
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/string-builder.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -65,6 +79,21 @@ class FieldsQueryCallerHelper
                 if ($includeStatic) {
                     $templateData['fieldMethod'] = $field->getName();
                     $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/string-builder-static.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
+                continue;
+            }
+
+            if ($field instanceof EncryptField) {
+                $templateData['canBeNull'] =  $field->canBeNull();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/encrypt-builder.phtml')
+                    ->setData($templateData)
+                    ->parse();
+
+                if ($includeStatic) {
+                    $templateData['fieldMethod'] = $field->getName();
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/encrypt-builder-static.phtml')
                         ->setData($templateData)
                         ->parse();
                 }

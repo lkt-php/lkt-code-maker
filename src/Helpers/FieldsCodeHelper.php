@@ -11,6 +11,7 @@ use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\ColorField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
+use Lkt\Factory\Schemas\Fields\EncryptField;
 use Lkt\Factory\Schemas\Fields\FileField;
 use Lkt\Factory\Schemas\Fields\FloatField;
 use Lkt\Factory\Schemas\Fields\ForeignKeyField;
@@ -86,6 +87,16 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof StringChoiceField) {
+
+                $options = $field->getAllowedOptions();
+
+                $optionsMethods = array_map(function ($option) {
+                    return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
+                }, $options);
+
+                $templateData['options'] = $options;
+                $templateData['optionsMethods'] = $optionsMethods;
+
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -93,6 +104,14 @@ class FieldsCodeHelper
             }
             elseif ($field instanceof StringField || $field instanceof HTMLField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof EncryptField) {
+                $templateData['hashMode'] = $field->isHashMode();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/encrypt-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

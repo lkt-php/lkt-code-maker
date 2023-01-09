@@ -139,6 +139,8 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof DateTimeField || $field instanceof UnixTimeStampField) {
+
+                $templateData['formats'] = $field->getFormats();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/datetime-field.phtml')
                     ->setData($templateData)
                     ->parse();

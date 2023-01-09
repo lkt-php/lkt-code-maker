@@ -3,6 +3,7 @@
  * @var string $fieldName
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var string[] $formats
  */
 ?>
 public function get<?php echo $fieldMethod;?>(): ?\Carbon\Carbon {
@@ -11,6 +12,15 @@ public function get<?php echo $fieldMethod;?>(): ?\Carbon\Carbon {
 public function get<?php echo $fieldMethod;?>Formatted(string $format = null) :string {
     return $this->_getDateTimeFormattedVal('<?php echo $fieldName;?>', $format);
 }
+public function get<?php echo $fieldMethod;?>IntlFormatted(string $format = null) :string {
+    return $this->_getDateTimeFormattedIntlVal('<?php echo $fieldName;?>', $format);
+}
+<?php foreach ($formats as $name => $cfg): ?>
+<?php $intl = $cfg[0]; $format = $cfg[1]; $method = $intl ? '_getDateTimeFormattedIntlVal' : '_getDateTimeFormattedVal';?>
+public function get<?php echo $fieldMethod;?>FormattedAs<?php echo ucfirst($name); ?>() :string {
+    return $this-><?php echo $method; ?>('<?php echo $fieldName;?>', '<?php echo $format;?>');
+}
+<?php endforeach; ?>
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasDateTimeVal('<?php echo $fieldName;?>');
 }

@@ -34,6 +34,9 @@ public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $valu
 public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
     return $this-><?php echo $constraint?>IntegerNotIn('<?php echo $column;?>', $values);
 }
+public function <?php echo $constraint?><?php echo $fieldMethod;?>EqualToField(string $component, string $field ) {
+    return $this-><?php echo $constraint?>FieldEqualToField('<?php echo $column;?>', $component, $field);
+}
 <?php if($canBeNull): ?>
 public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
     return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');

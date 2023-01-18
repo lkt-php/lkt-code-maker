@@ -41,7 +41,7 @@ class FieldsCodeHelper
 
         $methods = [];
 
-        foreach ($schema->getAllFields() as $field) {
+        foreach ($schema->getFields() as $field) {
             
             $fieldMethod = ucfirst($field->getName());
             $fieldName = $field->getName();

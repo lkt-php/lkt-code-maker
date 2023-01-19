@@ -12,6 +12,7 @@ use Lkt\Factory\Schemas\Fields\FloatField;
 use Lkt\Factory\Schemas\Fields\ForeignKeyField;
 use Lkt\Factory\Schemas\Fields\ForeignKeysField;
 use Lkt\Factory\Schemas\Fields\HTMLField;
+use Lkt\Factory\Schemas\Fields\IntegerChoiceField;
 use Lkt\Factory\Schemas\Fields\IntegerField;
 use Lkt\Factory\Schemas\Fields\StringChoiceField;
 use Lkt\Factory\Schemas\Fields\StringField;
@@ -45,6 +46,11 @@ class FieldsQueryCallerHelper
 
             if ($field instanceof ForeignKeyField || $field instanceof IntegerField) {
                 $templateData['canBeNull'] =  $field->canBeNull();
+
+                if ($field instanceof IntegerChoiceField) {
+                    $templateData['comparatorsIn'] = $field->getComparatorsIn();
+                }
+
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/integer-builder.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -70,6 +76,7 @@ class FieldsQueryCallerHelper
 
                     $templateData['options'] = $options;
                     $templateData['optionsMethods'] = $optionsMethods;
+                    $templateData['comparatorsIn'] = $field->getComparatorsIn();
                 }
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/string-builder.phtml')

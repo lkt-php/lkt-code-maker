@@ -3,6 +3,7 @@
  * @var string $fieldName
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var array $comparatorsIn
  */
 ?>
 public function get<?php echo $fieldMethod;?>() :int {
@@ -11,9 +12,41 @@ public function get<?php echo $fieldMethod;?>() :int {
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasIntegerChoiceVal('<?php echo $fieldName;?>');
 }
+public function has<?php echo $fieldMethod;?>In(array $values) :bool {
+    return $this->_integerChoiceIn('<?php echo $fieldName;?>', $values);
+}
+public function <?php echo lcfirst($fieldMethod);?>Is(int $value) :bool {
+    return $this->_integerChoiceEqual('<?php echo $fieldName;?>', $value);
+}
 /** @return <?php echo $returnSelf;?>
  */
 public function set<?php echo $fieldMethod;?>(int $<?php echo $fieldName;?>)  {
     $this->_setIntegerChoiceVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;
 }
+
+<?php foreach ($comparatorsIn as $comparatorName => $options): ?>
+    <?php
+    $c = count($options);
+    if ($c === 0) {
+        continue;
+    }
+
+    $singleMode = false;
+    if ($c === 1) {
+        $singleMode = true;
+        $optionsText = implode(",", $options);
+
+    } else {
+        $optionsText = "[" .implode(",", $options) . "]";
+    }
+
+    ?>
+    public function <?php echo lcfirst($fieldMethod);?>Is<?php echo ucfirst($comparatorName);?>() :bool {
+    <?php if ($singleMode): ?>
+        return $this->_integerChoiceEqual('<?php echo $fieldName;?>', <?php echo $optionsText; ?>);
+    <?php else: ?>
+        return $this->_integerChoiceIn('<?php echo $fieldName;?>', <?php echo $optionsText; ?>);
+    <?php endif; ?>
+    }
+<?php endforeach; ?>

@@ -5,6 +5,7 @@
  * @var string $returnSelf
  * @var string[] $options
  * @var string[] $optionsMethods
+ * @var array $comparatorsIn
  */
 ?>
 public function get<?php echo $fieldMethod;?>() :string {
@@ -12,6 +13,12 @@ public function get<?php echo $fieldMethod;?>() :string {
 }
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasStringChoiceVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>In(array $values) :bool {
+    return $this->_stringChoiceIn('<?php echo $fieldName;?>', $values);
+}
+public function <?php echo lcfirst($fieldMethod);?>Is(string $value) :bool {
+    return $this->_stringChoiceEqual('<?php echo $fieldName;?>', $value);
 }
 /** @return <?php echo $returnSelf;?>
  */
@@ -28,5 +35,31 @@ public function <?php echo lcfirst($fieldMethod);?>Is<?php echo $option; ?>() :b
 public function set<?php echo $fieldMethod;?><?php echo $option; ?>()  {
     $this->_setStringChoiceVal('<?php echo $fieldName;?>', '<?php echo $options[$i];?>');
     return $this;
+}
+<?php endforeach; ?>
+
+<?php foreach ($comparatorsIn as $comparatorName => $options): ?>
+<?php
+    $c = count($options);
+    if ($c === 0) {
+        continue;
+    }
+
+    $singleMode = false;
+    if ($c === 1) {
+        $singleMode = true;
+        $optionsText = "'" .implode("','", $options) . "'";
+
+    } else {
+        $optionsText = "['" .implode("','", $options) . "']";
+    }
+
+?>
+public function <?php echo lcfirst($fieldMethod);?>Is<?php echo ucfirst($comparatorName);?>() :bool {
+    <?php if ($singleMode): ?>
+    return $this->_stringChoiceEqual('<?php echo $fieldName;?>', <?php echo $optionsText; ?>);
+    <?php else: ?>
+    return $this->_stringChoiceIn('<?php echo $fieldName;?>', <?php echo $optionsText; ?>);
+    <?php endif; ?>
 }
 <?php endforeach; ?>

@@ -4,6 +4,7 @@
  * @var string $fieldMethod
  * @var string $returnSelf
  * @var bool $canBeNull
+ * @var array $comparatorsIn
  */
 ?>
 /** @return <?php echo $returnSelf;?> */
@@ -56,3 +57,35 @@ public static function <?php echo $fieldMethod;?>IsNotNull() {
     return static::isNotNull('<?php echo $column;?>');
 }
 <?php endif; ?>
+
+<?php foreach ($comparatorsIn as $comparatorName => $options): ?>
+<?php
+    $c = count($options);
+    if ($c === 0) {
+        continue;
+    }
+
+    $singleMode = false;
+    if ($c === 1) {
+        $singleMode = true;
+        $optionsText = "'" .implode("','", $options) . "'";
+
+    } else {
+        $optionsText = "['" .implode("','", $options) . "']";
+    }
+?>
+public static function <?php echo $fieldMethod;?>Is<?php echo ucfirst($comparatorName);?>() {
+    <?php if ($singleMode): ?>
+        return static::stringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
+    <?php else: ?>
+        return static::stringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+    <?php endif; ?>
+}
+public static function <?php echo $fieldMethod;?>IsNot<?php echo ucfirst($comparatorName);?>() {
+    <?php if ($singleMode): ?>
+        return static::stringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
+    <?php else: ?>
+        return static::stringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+    <?php endif; ?>
+}
+<?php endforeach; ?>

@@ -7,12 +7,13 @@
  * @var string $relatedReturnClass
  * @var string $relatedClassName
  * @var string $relatedQueryCaller
+ * @var string $singleReturnType
  * @var bool $isSingleMode
  */
 ?>
 <?php if($isSingleMode): ?>
 /** <?php echo $relatedReturnClass; ?> */
-public function get<?php echo $fieldMethod;?>() {
+public function get<?php echo $fieldMethod;?>()<?php echo $singleReturnType; ?> {
     return $this->_getRelatedValSingle('<?php echo $component; ?>', '<?php echo $fieldName;?>');
 }
 <?php else: ?>

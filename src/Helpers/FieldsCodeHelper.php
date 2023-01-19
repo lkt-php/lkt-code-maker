@@ -74,6 +74,7 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof IntegerChoiceField) {
+                $templateData['comparatorsIn'] = $field->getComparatorsIn();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-choice-field.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -96,6 +97,7 @@ class FieldsCodeHelper
 
                 $templateData['options'] = $options;
                 $templateData['optionsMethods'] = $optionsMethods;
+                $templateData['comparatorsIn'] = $field->getComparatorsIn();
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
                     ->setData($templateData)
@@ -159,6 +161,7 @@ class FieldsCodeHelper
                     $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
                     $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
                     $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+                    $templateData['singleReturnType'] = '';
 
                     if ($relatedQueryCaller) {
                         $templateData['relatedQueryCaller'] = '\\' . $relatedQueryCaller;
@@ -168,7 +171,8 @@ class FieldsCodeHelper
                 if ($field instanceof RelatedField) {
                     $templateData['isSingleMode'] = $field->isSingleMode();
                     if ($field->isSingleMode()) {
-                        $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName;
+                        $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName . '|null';
+                        $templateData['singleReturnType'] = ': ?\\'. $relatedClassName;
                     }
                 }
 

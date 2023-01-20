@@ -22,10 +22,8 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     <?php echo $traits?>
 
     const GENERATED_TYPE = '<?php echo $component; ?>';
+    const COMPONENT = '<?php echo $component; ?>';
 
-    public function __construct($id = 0) {
-        parent::__construct($id, static::GENERATED_TYPE);
-    }
     <?php echo $methods?>
     /**
     * @return <?php echo $returnSelf;?>[]

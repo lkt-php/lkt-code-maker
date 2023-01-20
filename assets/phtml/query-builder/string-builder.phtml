@@ -10,84 +10,86 @@
  */
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
-public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
-    return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $value) {
-    return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
-    return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>NotLike(string $value) {
-    return $this-><?php echo $constraint?>StringNotLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>BeginsLike(string $value) {
-    return $this-><?php echo $constraint?>StringBeginsLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>NotBeginsLike(string $value) {
-    return $this-><?php echo $constraint?>StringNotBeginsLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>EndsLike(string $value) {
-    return $this-><?php echo $constraint?>StringEndsLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>NotEndsLike(string $value) {
-    return $this-><?php echo $constraint?>StringNotEndsLike('<?php echo $column;?>', $value);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
-    return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', $values);
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
-    return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', $values);
-}
-<?php if($canBeNull): ?>
-public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
-    return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
-    return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
-}
-<?php endif; ?>
-<?php if($optionsMethods): ?>
-<?php foreach ($optionsMethods as $i => $option): ?>
-public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
-    return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
-    return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
-}
-<?php endforeach; ?>
-<?php endif; ?>
-<?php endforeach; ?>
-
-<?php foreach ($comparatorsIn as $comparatorName => $options): ?>
-<?php
-    $c = count($options);
-    if ($c === 0) {
-        continue;
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
+        return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $value) {
+        return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
+        return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>NotLike(string $value) {
+        return $this-><?php echo $constraint?>StringNotLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>BeginsLike(string $value) {
+        return $this-><?php echo $constraint?>StringBeginsLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>NotBeginsLike(string $value) {
+        return $this-><?php echo $constraint?>StringNotBeginsLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>EndsLike(string $value) {
+        return $this-><?php echo $constraint?>StringEndsLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>NotEndsLike(string $value) {
+        return $this-><?php echo $constraint?>StringNotEndsLike('<?php echo $column;?>', $value);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
+        return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', $values);
+    }
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
+        return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', $values);
     }
 
-    $singleMode = false;
-    if ($c === 1) {
-        $singleMode = true;
-        $optionsText = "'" .implode("','", $options) . "'";
-
-    } else {
-        $optionsText = "['" .implode("','", $options) . "']";
+    <?php if($canBeNull): ?>
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNull() {
+        return $this-><?php echo $constraint?>IsNull('<?php echo $column;?>');
     }
-?>
-public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo ucfirst($comparatorName);?>() {
-    <?php if ($singleMode): ?>
-        return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
-    <?php else: ?>
-        return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+    public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNotNull() {
+        return $this-><?php echo $constraint?>IsNotNull('<?php echo $column;?>');
+    }
     <?php endif; ?>
-}
-public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo ucfirst($comparatorName);?>() {
-    <?php if ($singleMode): ?>
-        return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
-    <?php else: ?>
-        return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+
+    <?php if($optionsMethods): ?>
+        <?php foreach ($optionsMethods as $i => $option): ?>
+        public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
+            return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+        }
+        public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
+            return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+        }
+        <?php endforeach; ?>
     <?php endif; ?>
-}
+
+    <?php foreach ($comparatorsIn as $comparatorName => $options): ?>
+        <?php
+        $c = count($options);
+        if ($c === 0) {
+            continue;
+        }
+
+        $singleMode = false;
+        if ($c === 1) {
+            $singleMode = true;
+            $optionsText = "'" .implode("','", $options) . "'";
+
+        } else {
+            $optionsText = "['" .implode("','", $options) . "']";
+        }
+        ?>
+        public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo ucfirst($comparatorName);?>() {
+        <?php if ($singleMode): ?>
+            return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        <?php else: ?>
+            return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        <?php endif; ?>
+        }
+        public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo ucfirst($comparatorName);?>() {
+        <?php if ($singleMode): ?>
+            return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        <?php else: ?>
+            return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        <?php endif; ?>
+        }
+    <?php endforeach; ?>
 <?php endforeach; ?>

@@ -40,3 +40,7 @@ public function set<?php echo $fieldMethod;?>WithData(array $<?php echo $fieldNa
     $this->_setRelatedValWithData('<?php echo $component; ?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;
 }
+/** @return <?php echo $relatedQueryCaller; ?> */
+public function get<?php echo $fieldMethod;?>QueryCaller(): <?php echo $relatedQueryCaller; ?> {
+    return $this->_getRelatedCustomQueryCaller('<?php echo $component; ?>', '<?php echo $fieldName;?>');
+}

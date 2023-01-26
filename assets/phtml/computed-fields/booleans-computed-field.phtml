@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $allRequired
+ * @var string $allRequiredSetter
+ */
+?>
+public function <?php echo $fieldName;?>() :bool {
+    <?php echo $allRequired; ?>
+}
+public function set<?php echo ucfirst($fieldName);?>() :static {
+    <?php echo $allRequiredSetter; ?>
+}

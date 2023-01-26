@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var string $value
+ * @var bool $canBeNull
+ * @var string $allRequired
+ */
+?>
+<?php foreach (['and', 'or'] as $constraint): ?>
+public function <?php echo $constraint?><?php echo $fieldMethod;?>() {
+<?php echo str_replace(':CONSTRAINT', $constraint, $allRequired); ?>
+}
+<?php endforeach; ?>

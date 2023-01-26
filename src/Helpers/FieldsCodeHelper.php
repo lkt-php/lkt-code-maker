@@ -2,6 +2,7 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringAboveMinLengthComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringBelowMaxLengthComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringBetweenMinAndMaxLengthComputedField;
@@ -241,6 +242,17 @@ class FieldsCodeHelper
 
             if ($field instanceof RelatedKeysMergeField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/related-keys-merge-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof BooleansComputedField) {
+                $templateData['allRequired'] = BooleansComputedField::getAllConditionRequiredString($field, $schema);
+                if ($templateData['allRequired'] === '') continue;
+                $templateData['allRequiredSetter'] = BooleansComputedField::getAllConditionRequiredSetterString($field, $schema);
+
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/booleans-computed-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

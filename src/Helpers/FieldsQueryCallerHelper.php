@@ -2,6 +2,7 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
@@ -165,6 +166,22 @@ class FieldsQueryCallerHelper
                 if ($includeStatic) {
                     $templateData['fieldMethod'] = $field->getName();
                     $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/datetime-builder-static.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
+                continue;
+            }
+
+            if ($field instanceof BooleansComputedField) {
+                $templateData['allRequired'] = BooleansComputedField::getAllConditionRequiredQueryString($field, $schema);
+                if ($templateData['allRequired'] === '') continue;
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/booleans-computed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+
+                if ($includeStatic) {
+                    $templateData['allRequired'] = BooleansComputedField::getAllConditionRequiredStaticQueryString($field, $schema);
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder-computed-fields/booleans-computed-field-static.phtml')
                         ->setData($templateData)
                         ->parse();
                 }

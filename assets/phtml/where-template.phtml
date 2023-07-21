@@ -24,9 +24,9 @@ const COMPONENT = '<?php echo $component; ?>';
 /** @return <?php echo $queryCaller;?> */
 public static function getEmpty()
 {
-    /** @var <?php echo $queryCaller;?> $caller */
-    $where = parent::getEmpty();
-    return $where;
+    /** @var <?php echo $queryCaller;?> $r */
+    $r = parent::getEmpty();
+    return $r;
 }
 
 <?php echo $methods?>

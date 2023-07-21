@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ * @var array $comparatorsIn
+ */
+?>
+public function and<?php echo ucfirst($fieldMethod);?>ASC() { return $this->andASC('<?php echo $column;?>'); }
+public function and<?php echo ucfirst($fieldMethod);?>DESC() { return $this->andDESC('<?php echo $column;?>'); }
+public static function <?php echo $fieldMethod;?>ASC() { return static::ASC('<?php echo $column;?>'); }
+public static function <?php echo $fieldMethod;?>DESC() { return static::DESC('<?php echo $column;?>'); }

@@ -3,6 +3,7 @@
 namespace Lkt\CodeMaker\Console\Commands;
 
 use Lkt\CodeMaker\CodeMaker;
+use Lkt\CodeMaker\OrderByMaker;
 use Lkt\CodeMaker\QueryCallerMaker;
 use Lkt\CodeMaker\WhereMaker;
 use Symfony\Component\Console\Command\Command;
@@ -19,6 +20,7 @@ class GenerateCommand extends Command
         WhereMaker::generate();
         QueryCallerMaker::generate();
         CodeMaker::generate();
+        OrderByMaker::generate();
         return 1;
     }
 }

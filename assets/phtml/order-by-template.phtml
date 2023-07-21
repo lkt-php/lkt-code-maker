@@ -14,23 +14,25 @@
 
 namespace <?php echo $namespace?>;
 
-use Lkt\QueryCaller\QueryCaller;
-use Lkt\QueryBuilding\DateIntervals\AbstractInterval;
-use Lkt\Factory\Instantiator\Instantiator;
-use Lkt\Factory\Schemas\Schema;
+use Lkt\QueryBuilding\OrderBy;
 
-class <?php echo $className; ?> extends QueryCaller {
+class <?php echo $className; ?> extends OrderBy {
 
 const COMPONENT = '<?php echo $component; ?>';
 
 /** @return <?php echo $queryCaller;?> */
-public static function getCaller()
+public static function ASC(string $field): static
 {
-    $schema = Schema::get(static::COMPONENT);
-
     /** @var <?php echo $queryCaller;?> $r */
-    $r = static::table($schema->getTable());
-    Instantiator::prepareQueryCaller(static::COMPONENT, $r);
+    $r = parent::ASC($field);
+    return $r;
+}
+
+/** @return <?php echo $queryCaller;?> */
+public static function DESC(string $field): static
+{
+    /** @var <?php echo $queryCaller;?> $r */
+    $r = parent::DESC($field);
     return $r;
 }
 

@@ -15,15 +15,6 @@ class QueryCallerMaker
     {
         $stack = Schema::getStack();
         echo "Generating query caller...\n";
-        $n = count($stack);
-        echo "There are ({$n}) schemas \n";
-        echo "\n";
-
-        $registeredSchemas = array_keys($stack);
-        echo "All registered schemas: ";
-        foreach ($registeredSchemas as $schema) {
-            echo "-> {$schema} \n";
-        }
         echo "\n";
         echo "\n";
 
@@ -61,10 +52,10 @@ class QueryCallerMaker
 
             $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
 
-            $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
+            $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\Query';
 
             if (!$relatedQueryCaller) {
-                $relatedQueryCaller = 'Lkt\QueryCaller\QueryCaller';
+                $relatedQueryCaller = 'Lkt\QueryBuilding\Query';
             }
             $relatedQueryCaller = '\\' . $relatedQueryCaller;
 

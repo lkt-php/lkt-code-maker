@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ * @var array $comparatorsIn
+ */
+?>
+public function andGroupBy<?php echo ucfirst($fieldMethod);?>() { return $this->andGroup('<?php echo $column;?>'); }
+public static function <?php echo $fieldMethod;?>() { return static::DEFINE('<?php echo $column;?>'); }

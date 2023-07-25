@@ -15,7 +15,7 @@
 namespace <?php echo $namespace?>;
 
 use Lkt\QueryBuilding\Where;
-use Lkt\QueryCaller\QueryCaller;
+use Lkt\QueryBuilding\Query;
 use Lkt\Factory\Instantiator\Instantiator;
 
 class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
@@ -28,20 +28,20 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     /**
     * @return <?php echo $returnSelf;?>[]
     */
-    public static function getMany(QueryCaller $queryCaller = null): array
+    public static function getMany(Query $builder = null): array
     {
         /** @var <?php echo $returnSelf;?>[] */
-        $r = parent::getMany($queryCaller);
+        $r = parent::getMany($builder);
         return $r;
     }
 
     /**
     * @return <?php echo $returnSelf;?>|null
     */
-    public static function getOne(QueryCaller $queryCaller = null)
+    public static function getOne(Query $builder = null)
     {
         /** @var <?php echo $returnSelf;?> */
-        $r = parent::getOne($queryCaller);
+        $r = parent::getOne($builder);
         return $r;
     }
 
@@ -49,10 +49,10 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     public static function getQueryCaller()
     {
         /**
-        * @var <?php echo $queryCaller;?> $caller
+        * @var <?php echo $queryCaller;?> $builder
         */
-        list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
-        return $caller;
+        list($builder) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
+        return $builder;
     }
 
     /** @return <?php echo $queryCaller;?> */
@@ -61,17 +61,17 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
         /**
         * @var <?php echo $queryCaller;?> $caller
         */
-        list($caller) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE, $data, $processRules, $filterRules);
-        return $caller;
+        list($builder) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE, $data, $processRules, $filterRules);
+        return $builder;
     }
 
     /**
     * @return <?php echo $returnSelf;?>[]
     */
-    public static function getPage(int $page, QueryCaller $queryCaller = null): array
+    public static function getPage(int $page, Query $builder = null): array
     {
         /** @var <?php echo $returnSelf;?>[] */
-        $r = parent::getPage($page, $queryCaller);
+        $r = parent::getPage($page, $builder);
         return $r;
     }
 }

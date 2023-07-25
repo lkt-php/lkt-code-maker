@@ -14,23 +14,17 @@
 
 namespace <?php echo $namespace?>;
 
-use Lkt\QueryBuilding\Query;
-use Lkt\QueryBuilding\DateIntervals\AbstractInterval;
-use Lkt\Factory\Instantiator\Instantiator;
-use Lkt\Factory\Schemas\Schema;
+use Lkt\QueryBuilding\GroupBy;
 
-class <?php echo $className; ?> extends Query {
+class <?php echo $className; ?> extends GroupBy {
 
 const COMPONENT = '<?php echo $component; ?>';
 
 /** @return <?php echo $queryCaller;?> */
-public static function getCaller()
+public static function define(string $field): static
 {
-    $schema = Schema::get(static::COMPONENT);
-
     /** @var <?php echo $queryCaller;?> $r */
-    $r = static::table($schema->getTable());
-    Instantiator::prepareQueryCaller(static::COMPONENT, $r);
+    $r = parent::define($field);
     return $r;
 }
 

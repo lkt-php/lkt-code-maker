@@ -2,21 +2,18 @@
 
 namespace Lkt\CodeMaker;
 
-use Lkt\CodeMaker\Helpers\FieldsCodeHelper;
-use Lkt\CodeMaker\Helpers\FieldsOrderByHelper;
-use Lkt\CodeMaker\Helpers\FieldsQueryCallerHelper;
+use Lkt\CodeMaker\Helpers\FieldsGroupByHelper;
 use Lkt\Factory\Instantiator\Instances\AbstractInstance;
 use Lkt\Factory\Schemas\Schema;
-use Lkt\Factory\Schemas\Values\StringValue;
 use Lkt\Templates\Template;
 use function Lkt\Tools\Strings\removeDuplicatedWhiteSpaces;
 
-class OrderByMaker
+class GroupByMaker
 {
     public static function generate(): void
     {
         $stack = Schema::getStack();
-        echo "Generating order by...\n";
+        echo "Generating group by...\n";
         echo "\n";
         echo "\n";
 
@@ -34,7 +31,7 @@ class OrderByMaker
             }
             $className = explode('\\', $className);
             $className = $className[count($className) - 1];
-            $className .= 'OrderBy';
+            $className .= 'GroupBy';
             $returnSelf = '\\' . $className;
 
             $extends = $instanceSettings->hasLegalExtendClass()
@@ -52,12 +49,12 @@ class OrderByMaker
             $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\OrderBy';
 
             if (!$relatedQueryCaller) {
-                $relatedQueryCaller = 'Lkt\QueryBuilding\OrderBy';
+                $relatedQueryCaller = 'Lkt\QueryBuilding\GroupBy';
             }
             $relatedQueryCaller = '\\' . $relatedQueryCaller;
 
-            $methods = FieldsOrderByHelper::makeFieldsCode($schema, true);
-            $code = Template::file(__DIR__ . '/../assets/phtml/order-by-template.phtml')->setData([
+            $methods = FieldsGroupByHelper::makeFieldsCode($schema, true);
+            $code = Template::file(__DIR__ . '/../assets/phtml/group-by-template.phtml')->setData([
                 'component' => $component,
                 'className' => $className,
                 'namespace' => $namespace,

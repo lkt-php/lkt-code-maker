@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var string $column
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ * @var bool $isDate
+ * @var array $comparatorsIn
+ */
+?>
+const column<?php echo ucfirst($fieldMethod); ?> = '<?php echo $column;?>';
+public function and<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andDatum('<?php echo $column;?>', $as); }
+public static function <?php echo $fieldMethod;?>(?string $as = null): static { return static::datum('<?php echo $column;?>', $as); }
+
+public function andCount<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andCountDatum('<?php echo $column;?>', $as); }
+public static function count<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return static::countDatum('<?php echo $column;?>', $as); }
+
+<?php if($isDate): ?>
+public function andYear<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andYearDatum('<?php echo $column;?>', $as); }
+public static function year<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return static::yearDatum('<?php echo $column;?>', $as); }
+
+public function andMonth<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andMonthDatum('<?php echo $column;?>', $as); }
+public static function month<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return static::monthDatum('<?php echo $column;?>', $as); }
+<?php endif;?>

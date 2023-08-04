@@ -6,6 +6,7 @@ use Lkt\CodeMaker\CodeMaker;
 use Lkt\CodeMaker\GroupByMaker;
 use Lkt\CodeMaker\OrderByMaker;
 use Lkt\CodeMaker\QueryCallerMaker;
+use Lkt\CodeMaker\SelectBuilderMaker;
 use Lkt\CodeMaker\WhereMaker;
 use Lkt\Factory\Schemas\Schema;
 use Symfony\Component\Console\Command\Command;
@@ -39,6 +40,7 @@ class GenerateCommand extends Command
         CodeMaker::generate();
         OrderByMaker::generate();
         GroupByMaker::generate();
+        SelectBuilderMaker::generate();
         return 1;
     }
 }

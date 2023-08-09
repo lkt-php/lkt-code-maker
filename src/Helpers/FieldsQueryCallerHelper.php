@@ -177,7 +177,7 @@ class FieldsQueryCallerHelper
             if ($field instanceof ConcatField) {
                 $templateData['canBeNull'] =  $field->canBeNull();
                 $templateData['separator'] =  $field->getSeparator();
-                $templateData['columns'] =  $field->getConcatenatedFieldsAsString();
+                $templateData['columns'] =  $field->getConcatenatedFieldsAsString($schema);
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/concat-builder.phtml')
                     ->setData($templateData)
                     ->parse();

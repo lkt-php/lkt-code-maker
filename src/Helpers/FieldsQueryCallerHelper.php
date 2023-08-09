@@ -6,6 +6,7 @@ use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
+use Lkt\Factory\Schemas\Fields\ConcatField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
 use Lkt\Factory\Schemas\Fields\EncryptField;
@@ -166,6 +167,24 @@ class FieldsQueryCallerHelper
                 if ($includeStatic) {
                     $templateData['fieldMethod'] = $field->getName();
                     $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/datetime-builder-static.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
+                continue;
+            }
+
+
+            if ($field instanceof ConcatField) {
+                $templateData['canBeNull'] =  $field->canBeNull();
+                $templateData['separator'] =  $field->getSeparator();
+                $templateData['columns'] =  $field->getConcatenatedFieldsAsString();
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/concat-builder.phtml')
+                    ->setData($templateData)
+                    ->parse();
+
+                if ($includeStatic) {
+                    $templateData['fieldMethod'] = $field->getName();
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/concat-builder-static.phtml')
                         ->setData($templateData)
                         ->parse();
                 }

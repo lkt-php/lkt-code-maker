@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :string {
+    return $this->_getConcatVal('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasConcatVal('<?php echo $fieldName;?>');
+}

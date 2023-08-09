@@ -10,6 +10,7 @@ use Lkt\Factory\Schemas\ComputedFields\StringEqualComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\ColorField;
+use Lkt\Factory\Schemas\Fields\ConcatField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
 use Lkt\Factory\Schemas\Fields\EncryptField;
@@ -242,6 +243,13 @@ class FieldsCodeHelper
 
             if ($field instanceof RelatedKeysMergeField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/related-keys-merge-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof ConcatField) {
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/concat-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

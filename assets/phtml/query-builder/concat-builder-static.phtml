@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var string $column
+ * @var string $separator
+ * @var string[] $columns
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ * @var bool $canBeNull
+ * @var array $comparatorsIn
+ */
+?>
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Equal(string $value) {
+    return static::concatEqual(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Not(string $value) {
+    return static::concatNot(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>Like(string $value) {
+    return static::concatLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>NotLike(string $value) {
+    return static::concatNotLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>BeginsLike(string $value) {
+    return static::concatBeginsLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>NotBeginsLike(string $value) {
+    return static::concatNotBeginsLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>EndsLike(string $value) {
+    return static::concatEndsLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}
+/** @return <?php echo $returnSelf;?> */
+public static function <?php echo $fieldMethod;?>NotEndsLike(string $value) {
+    return static::concatNotEndsLike(<?php echo $columns;?>, "'<?php echo $separator;?>'", $value);
+}

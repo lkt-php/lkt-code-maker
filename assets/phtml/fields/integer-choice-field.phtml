@@ -3,6 +3,8 @@
  * @var string $fieldName
  * @var string $fieldMethod
  * @var string $returnSelf
+ * @var string[] $options
+ * @var string[] $optionsMethods
  * @var array $comparatorsIn
  */
 ?>
@@ -24,13 +26,30 @@ public function set<?php echo $fieldMethod;?>(int $<?php echo $fieldName;?>)  {
     $this->_setIntegerChoiceVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;
 }
+<?php foreach ($optionsMethods as $i => $option): ?>
+    public function <?php echo lcfirst($fieldMethod);?>Is<?php echo $option; ?>() :bool {
+    <?php if(is_int($options[$i])): ?>
+        return $this->_getIntegerChoiceVal('<?php echo $fieldName;?>') === <?php echo $options[$i]; ?>;
+    <?php else: ?>
+        return $this->_getIntegerChoiceVal('<?php echo $fieldName;?>') === (int)<?php echo $options[$i]; ?>;
+    <?php endif; ?>
+    }
+    /** @return <?php echo $returnSelf;?>
+    */
+    public function set<?php echo $fieldMethod;?><?php echo $option; ?>()  {
+    <?php if(is_int($options[$i])): ?>
+        $this->_setIntegerChoiceVal('<?php echo $fieldName;?>', <?php echo $options[$i];?>);
+    <?php else: ?>
+        $this->_setIntegerChoiceVal('<?php echo $fieldName;?>', (int)<?php echo $options[$i];?>);
+    <?php endif; ?>
+    return $this;
+    }
+<?php endforeach; ?>
 
 <?php foreach ($comparatorsIn as $comparatorName => $options): ?>
     <?php
     $c = count($options);
-    if ($c === 0) {
-        continue;
-    }
+    if ($c === 0) continue;
 
     $singleMode = false;
     if ($c === 1) {

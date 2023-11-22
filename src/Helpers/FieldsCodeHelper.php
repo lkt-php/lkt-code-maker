@@ -44,7 +44,7 @@ class FieldsCodeHelper
         $methods = [];
 
         foreach ($schema->getFields() as $field) {
-            
+
             $fieldMethod = ucfirst($field->getName());
             $fieldName = $field->getName();
 
@@ -62,7 +62,7 @@ class FieldsCodeHelper
                 $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
                 $templateData['component'] = $relatedComponent;
                 $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
-                $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName;
+                $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName;
 
                 if ($field->isSoftTyped()) {
                     $templateData['relatedClassName'] = '';
@@ -76,13 +76,24 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof IntegerChoiceField) {
+
+                $options = $field->getAllowedOptions();
+
+                $optionsMethods = [];
+                foreach ($options as $key => $value) {
+                    $d = is_numeric($key) ? trim($value) : trim($key);
+                    $d = str_replace(' ', '', ucwords(str_replace('-', ' ', $d)));
+                    $optionsMethods[$key] = $d;
+                }
+
+                $templateData['options'] = $options;
+                $templateData['optionsMethods'] = $optionsMethods;
                 $templateData['comparatorsIn'] = $field->getComparatorsIn();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-choice-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;
-            }
-            elseif ($field instanceof IntegerField) {
+            } elseif ($field instanceof IntegerField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-field.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -105,8 +116,7 @@ class FieldsCodeHelper
                     ->setData($templateData)
                     ->parse();
                 continue;
-            }
-            elseif ($field instanceof StringField || $field instanceof HTMLField) {
+            } elseif ($field instanceof StringField || $field instanceof HTMLField) {
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-field.phtml')
                     ->setData($templateData)
                     ->parse();
@@ -161,7 +171,7 @@ class FieldsCodeHelper
 
                     $templateData['component'] = $relatedComponent;
                     $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
-                    $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
+                    $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName . '[]';
                     $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
                     $templateData['singleReturnType'] = '';
 
@@ -173,8 +183,8 @@ class FieldsCodeHelper
                 if ($field instanceof RelatedField) {
                     $templateData['isSingleMode'] = $field->isSingleMode();
                     if ($field->isSingleMode()) {
-                        $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName . '|null';
-                        $templateData['singleReturnType'] = ': ?\\'. $relatedClassName;
+                        $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName . '|null';
+                        $templateData['singleReturnType'] = ': ?\\' . $relatedClassName;
                     }
                 }
 
@@ -208,7 +218,7 @@ class FieldsCodeHelper
                 $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
                 $templateData['component'] = $relatedComponent;
                 $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
-                $templateData['relatedReturnClass'] = '@return \\'. $relatedClassName. '[]';
+                $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName . '[]';
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/pivot-field.phtml')
                     ->setData($templateData)
@@ -279,7 +289,7 @@ class FieldsCodeHelper
             if ($field instanceof StringInComputedField) {
                 $relatedField = $schema->getField($field->getField());
                 $templateData['getter'] = $relatedField->getGetterForComputed();
-                $templateData['value'] = "'".implode("','", $field->getValue())."'";
+                $templateData['value'] = "'" . implode("','", $field->getValue()) . "'";
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/computed-fields/string-in-computed-field.phtml')
                     ->setData($templateData)
                     ->parse();

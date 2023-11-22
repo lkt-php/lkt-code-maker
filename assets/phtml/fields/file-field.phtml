@@ -34,3 +34,6 @@ public function set<?php echo $fieldMethod;?>InternalPath(string $<?php echo $fi
     $this->_setInternalPath('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
     return $this;
 }
+public function get<?php echo $fieldMethod;?>FieldConfig(): ?\Lkt\Factory\Schemas\Fields\FileField {
+    return $this->_getFileFieldConfig('<?php echo $fieldName;?>');
+}

@@ -6,6 +6,7 @@
  * @var string[] $options
  * @var string[] $optionsMethods
  * @var array $comparatorsIn
+ * @var bool $enabledEmptyPreset
  */
 ?>
 public function get<?php echo $fieldMethod;?>() :int {
@@ -44,6 +45,11 @@ public function set<?php echo $fieldMethod;?>(int $<?php echo $fieldName;?>)  {
     <?php endif; ?>
     return $this;
     }
+    <?php if ($enabledEmptyPreset): ?>
+    public static function emptyWith<?php echo $fieldMethod;?>EqualTo<?php echo $option; ?>(): static  {
+        return static::getInstance()->set<?php echo $fieldMethod;?><?php echo $option; ?>();
+    }
+    <?php endif; ?>
 <?php endforeach; ?>
 
 <?php foreach ($comparatorsIn as $comparatorName => $options): ?>

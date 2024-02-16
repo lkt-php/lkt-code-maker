@@ -86,6 +86,7 @@ class FieldsCodeHelper
                     $optionsMethods[$key] = $d;
                 }
 
+                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
                 $templateData['options'] = $options;
                 $templateData['optionsMethods'] = $optionsMethods;
                 $templateData['comparatorsIn'] = $field->getComparatorsIn();
@@ -108,6 +109,7 @@ class FieldsCodeHelper
                     return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
                 }, $options);
 
+                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
                 $templateData['options'] = $options;
                 $templateData['optionsMethods'] = $optionsMethods;
                 $templateData['comparatorsIn'] = $field->getComparatorsIn();

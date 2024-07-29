@@ -27,8 +27,14 @@ class WhereMaker
 
             $className = $instanceSettings->getWhereClassName();
             if ($className === '') {
-                echo "Component without Where: {$component}...\n";
-                continue;
+                $className = $instanceSettings->getAppClass();
+                if ($className === '') {
+                    echo "Component without Where: {$component}...\n";
+                    continue;
+                }
+                $className = explode('\\', $className);
+                $className = $className[count($className) - 1];
+                $className .= 'Where';
             }
             $returnSelf = '\\' . $className;
 

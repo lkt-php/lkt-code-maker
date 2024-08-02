@@ -5,6 +5,8 @@
  * @var string $returnSelf
  * @var bool $canBeNull
  * @var array $comparatorsIn
+ * @var array $optionsMethods
+ * @var array $options
  */
 ?>
 /** @return <?php echo $returnSelf;?> */
@@ -56,6 +58,17 @@ public static function <?php echo $fieldMethod;?>IsNull() {
 public static function <?php echo $fieldMethod;?>IsNotNull() {
     return static::isNotNull('<?php echo $column;?>');
 }
+<?php endif; ?>
+
+<?php if($optionsMethods): ?>
+    <?php foreach ($optionsMethods as $i => $option): ?>
+        public static function <?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
+            return static::stringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+        }
+        public static function <?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
+            return static::stringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+        }
+    <?php endforeach; ?>
 <?php endif; ?>
 
 <?php foreach ($comparatorsIn as $comparatorName => $options): ?>

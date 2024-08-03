@@ -57,9 +57,12 @@ class FieldsCodeHelper
             if ($field instanceof ForeignKeyField) {
 
                 $relatedComponent = $field->getComponent();
-                $relatedSchema = Schema::get($relatedComponent);
+                $relatedClassName = '';
+                if ($relatedComponent) {
+                    $relatedSchema = Schema::get($relatedComponent);
 
-                $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+                    $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+                }
                 $templateData['component'] = $relatedComponent;
                 $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
                 $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName;

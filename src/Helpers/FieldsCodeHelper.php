@@ -29,6 +29,7 @@ use Lkt\Factory\Schemas\Fields\RelatedKeysMergeField;
 use Lkt\Factory\Schemas\Fields\StringChoiceField;
 use Lkt\Factory\Schemas\Fields\StringField;
 use Lkt\Factory\Schemas\Fields\UnixTimeStampField;
+use Lkt\Factory\Schemas\Fields\ValueListField;
 use Lkt\Factory\Schemas\Schema;
 use Lkt\Templates\Template;
 
@@ -118,6 +119,12 @@ class FieldsCodeHelper
                 $templateData['comparatorsIn'] = $field->getComparatorsIn();
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
+                continue;
+
+            } elseif ($field instanceof ValueListField) {
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/value-list-field.phtml')
                     ->setData($templateData)
                     ->parse();
                 continue;

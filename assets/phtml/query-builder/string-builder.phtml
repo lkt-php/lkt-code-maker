@@ -4,41 +4,43 @@
  * @var string $fieldMethod
  * @var string $returnSelf
  * @var bool $canBeNull
+ * @var bool $isI18n
  * @var string[] $options
  * @var string[] $optionsMethods
  * @var array $comparatorsIn
  */
+$i18nPrepend = $isI18n ? 'i18n' : '';
 ?>
 <?php foreach (['and', 'or'] as $constraint): ?>
     public function <?php echo $constraint?><?php echo $fieldMethod;?>Equal(string $value) {
-        return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEqual('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>Not(string $value) {
-        return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNot('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>Like(string $value) {
-        return $this-><?php echo $constraint?>StringLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>NotLike(string $value) {
-        return $this-><?php echo $constraint?>StringNotLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNotLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>BeginsLike(string $value) {
-        return $this-><?php echo $constraint?>StringBeginsLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringBeginsLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>NotBeginsLike(string $value) {
-        return $this-><?php echo $constraint?>StringNotBeginsLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNotBeginsLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>EndsLike(string $value) {
-        return $this-><?php echo $constraint?>StringEndsLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEndsLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>NotEndsLike(string $value) {
-        return $this-><?php echo $constraint?>StringNotEndsLike('<?php echo $column;?>', $value);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNotEndsLike('<?php echo $column;?>', $value);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>In(array $values) {
-        return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', $values);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringIn('<?php echo $column;?>', $values);
     }
     public function <?php echo $constraint?><?php echo $fieldMethod;?>NotIn(array $values) {
-        return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', $values);
+        return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNotIn('<?php echo $column;?>', $values);
     }
 
     <?php if($canBeNull): ?>
@@ -53,10 +55,10 @@
     <?php if($optionsMethods): ?>
         <?php foreach ($optionsMethods as $i => $option): ?>
         public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
-            return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
         }
         public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
-            return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
         }
         <?php endforeach; ?>
     <?php endif; ?>
@@ -79,16 +81,16 @@
         ?>
         public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo ucfirst($comparatorName);?>() {
         <?php if ($singleMode): ?>
-            return $this-><?php echo $constraint?>StringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
         <?php else: ?>
-            return $this-><?php echo $constraint?>StringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
         <?php endif; ?>
         }
         public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo ucfirst($comparatorName);?>() {
         <?php if ($singleMode): ?>
-            return $this-><?php echo $constraint?>StringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
         <?php else: ?>
-            return $this-><?php echo $constraint?>StringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
         <?php endif; ?>
         }
     <?php endforeach; ?>

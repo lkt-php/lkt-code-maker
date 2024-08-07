@@ -68,6 +68,7 @@ class FieldsQueryCallerHelper
 
             if ($field instanceof StringField || $field instanceof HTMLField || $field instanceof EmailField) {
                 $templateData['canBeNull'] =  $field->canBeNull();
+                $templateData['isI18n'] = method_exists($field, 'isI18nJson') ? $field->isI18nJson() : false;
 
                 if ($field instanceof StringChoiceField) {
                     $options = $field->getAllowedOptions();

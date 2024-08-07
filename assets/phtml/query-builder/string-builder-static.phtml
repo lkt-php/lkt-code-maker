@@ -4,50 +4,52 @@
  * @var string $fieldMethod
  * @var string $returnSelf
  * @var bool $canBeNull
+ * @var bool $isI18n
  * @var array $comparatorsIn
  * @var array $optionsMethods
  * @var array $options
  */
+$i18nPrepend = $isI18n ? 'i18nS' : 's';
 ?>
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>Equal(string $value) {
-    return static::stringEqual('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringEqual('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>Not(string $value) {
-    return static::stringNot('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringNot('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>Like(string $value) {
-    return static::stringLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>NotLike(string $value) {
-    return static::stringNotLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringNotLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>BeginsLike(string $value) {
-    return static::stringBeginsLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringBeginsLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>NotBeginsLike(string $value) {
-    return static::stringNotBeginsLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringNotBeginsLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>EndsLike(string $value) {
-    return static::stringEndsLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringEndsLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>NotEndsLike(string $value) {
-    return static::stringNotEndsLike('<?php echo $column;?>', $value);
+    return static::<?php echo $i18nPrepend; ?>tringNotEndsLike('<?php echo $column;?>', $value);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>In(array $values) {
-    return static::stringIn('<?php echo $column;?>', $values);
+    return static::<?php echo $i18nPrepend; ?>tringIn('<?php echo $column;?>', $values);
 }
 /** @return <?php echo $returnSelf;?> */
 public static function <?php echo $fieldMethod;?>NotIn(array $values) {
-    return static::stringNotIn('<?php echo $column;?>', $values);
+    return static::<?php echo $i18nPrepend; ?>tringNotIn('<?php echo $column;?>', $values);
 }
 <?php if($canBeNull): ?>
 /** @return <?php echo $returnSelf;?> */
@@ -63,10 +65,10 @@ public static function <?php echo $fieldMethod;?>IsNotNull() {
 <?php if($optionsMethods): ?>
     <?php foreach ($optionsMethods as $i => $option): ?>
         public static function <?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
-            return static::stringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return static::<?php echo $i18nPrepend; ?>tringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
         }
         public static function <?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
-            return static::stringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return static::<?php echo $i18nPrepend; ?>tringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
         }
     <?php endforeach; ?>
 <?php endif; ?>
@@ -89,16 +91,16 @@ public static function <?php echo $fieldMethod;?>IsNotNull() {
 ?>
 public static function <?php echo $fieldMethod;?>Is<?php echo ucfirst($comparatorName);?>() {
     <?php if ($singleMode): ?>
-        return static::stringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        return static::<?php echo $i18nPrepend; ?>tringEqual('<?php echo $column;?>', <?php echo $optionsText; ?>);
     <?php else: ?>
-        return static::stringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        return static::<?php echo $i18nPrepend; ?>tringIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
     <?php endif; ?>
 }
 public static function <?php echo $fieldMethod;?>IsNot<?php echo ucfirst($comparatorName);?>() {
     <?php if ($singleMode): ?>
-        return static::stringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        return static::<?php echo $i18nPrepend; ?>tringNot('<?php echo $column;?>', <?php echo $optionsText; ?>);
     <?php else: ?>
-        return static::stringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
+        return static::<?php echo $i18nPrepend; ?>tringNotIn('<?php echo $column;?>', <?php echo $optionsText; ?>);
     <?php endif; ?>
 }
 <?php endforeach; ?>

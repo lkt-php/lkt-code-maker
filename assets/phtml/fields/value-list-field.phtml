@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $returnSelf
+ */
+?>
+public function get<?php echo $fieldMethod;?>() :string {
+    return $this->_getStringVal('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>AsArray() :array {
+    return $this->_getValueListValArray('<?php echo $fieldName;?>');
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasStringVal('<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(string|array $<?php echo $fieldName;?>)  {
+    $this->_setValueListVal('<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}

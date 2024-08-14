@@ -65,8 +65,13 @@ class FieldsCodeHelper
                     $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
                 }
                 $templateData['component'] = $relatedComponent;
-                $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
-                $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName;
+                $templateData['relatedClassName'] = '';
+                $templateData['relatedReturnClass'] = '';
+
+                if ($relatedClassName !== '') {
+                    $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
+                    $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName;
+                }
 
                 if ($field->isSoftTyped()) {
                     $templateData['relatedClassName'] = '';

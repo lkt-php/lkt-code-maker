@@ -31,4 +31,12 @@ public function get<?php echo $fieldMethod;?>() <?php echo $relatedClassName?> {
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasForeignVal('<?php echo $component;?>', $this->get<?php echo $fieldMethod;?>Id(), '<?php echo $fieldName;?>');
 }
+<?php else: ?>
+public function get<?php echo $fieldMethod;?>() {
+return $this->_getForeignVal('<?php echo $component;?>', $this->get<?php echo $fieldMethod;?>Id(), '<?php echo $fieldName;?>');
+}
+
+public function has<?php echo $fieldMethod;?>() :bool {
+return $this->_hasForeignVal('<?php echo $component;?>', $this->get<?php echo $fieldMethod;?>Id(), '<?php echo $fieldName;?>');
+}
 <?php endif; ?>

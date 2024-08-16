@@ -68,6 +68,7 @@ class CodeMaker
                 'methods' => $methods,
                 'returnSelf' => $returnSelf,
                 'queryCaller' => $relatedQueryCaller,
+                'hasTable' => $schema->getTable() !== '_'
             ])->parse();
             $code = str_replace("\n", ' ', $code);
             $code = removeDuplicatedWhiteSpaces($code);

@@ -9,14 +9,17 @@
  * @var string $methods
  * @var string $returnSelf
  * @var string $queryCaller
+ * @var bool $hasTable
  */
 ?>
 
 namespace <?php echo $namespace?>;
 
+<?php if($hasTable) : ?>
 use Lkt\QueryBuilding\Where;
 use Lkt\QueryBuilding\Query;
 use Lkt\Factory\Instantiator\Instantiator;
+<?php endif; ?>
 
 class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
     <?php echo $traits?>
@@ -25,6 +28,7 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     const COMPONENT = '<?php echo $component; ?>';
 
     <?php echo $methods?>
+    <?php if($hasTable) : ?>
     /**
     * @return <?php echo $returnSelf;?>[]
     */
@@ -74,4 +78,5 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
         $r = parent::getPage($page, $builder);
         return $r;
     }
+    <?php endif; ?>
 }

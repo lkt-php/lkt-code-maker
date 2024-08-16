@@ -61,7 +61,6 @@ class FieldsCodeHelper
                 $relatedClassName = '';
                 if ($relatedComponent) {
                     $relatedSchema = Schema::get($relatedComponent);
-
                     $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
                 }
                 $templateData['component'] = $relatedComponent;

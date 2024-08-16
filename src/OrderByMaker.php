@@ -22,6 +22,8 @@ class OrderByMaker
 
         foreach ($stack as $schema) {
 
+            if ($schema->getTable() === '_') continue;
+
             $component = $schema->getComponent();
             echo "Generating order by for: {$component}...\n";
 

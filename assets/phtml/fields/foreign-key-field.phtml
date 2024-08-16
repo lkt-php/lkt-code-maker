@@ -21,7 +21,7 @@ public function set<?php echo $fieldMethod;?>Id(int $<?php echo $fieldName;?>Id)
     return $this;
 }
 
-<?php if($component !== ''): ?>
+<?php if($relatedReturnClass !== ''): ?>
 /** <?php echo $relatedReturnClass; ?>
 */
 public function get<?php echo $fieldMethod;?>() <?php echo $relatedClassName?> {

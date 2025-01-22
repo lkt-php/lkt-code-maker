@@ -5,8 +5,7 @@
  * @var string $returnSelf
  * @var bool $canBeNull
  * @var bool $isI18n
- * @var string[] $options
- * @var string[] $optionsMethods
+ * @var string[] $optionsToMethods
  * @var array $comparatorsIn
  */
 $i18nPrepend = $isI18n ? 'i18n' : '';
@@ -52,13 +51,13 @@ $i18nPrepend = $isI18n ? 'i18n' : '';
     }
     <?php endif; ?>
 
-    <?php if($optionsMethods): ?>
-        <?php foreach ($optionsMethods as $i => $option): ?>
+    <?php if($optionsToMethods): ?>
+        <?php foreach ($optionsToMethods as $optionValue => $option): ?>
         public function <?php echo $constraint?><?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
-            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringEqual('<?php echo $column;?>', '<?php echo $optionValue; ?>');
         }
         public function <?php echo $constraint?><?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
-            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return $this-><?php echo $constraint?><?php echo $i18nPrepend?>StringNot('<?php echo $column;?>', '<?php echo $optionValue; ?>');
         }
         <?php endforeach; ?>
     <?php endif; ?>

@@ -77,9 +77,13 @@ class FieldsQueryCallerHelper
                         return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
                     }, $options);
 
-                    $templateData['options'] = $options;
-                    $templateData['optionsMethods'] = $optionsMethods;
                     $templateData['comparatorsIn'] = $field->getComparatorsIn();
+
+                    $optionsToMethods = [];
+                    foreach ($options as $i => $option) {
+                        $optionsToMethods[$option] = $optionsMethods[$i];
+                    }
+                    $templateData['optionsToMethods'] = $optionsToMethods;
                 }
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/string-builder.phtml')
@@ -87,6 +91,8 @@ class FieldsQueryCallerHelper
                     ->parse();
 
                 if ($includeStatic) {
+                    $templateData['options'] = $options;
+                    $templateData['optionsMethods'] = $optionsMethods;
                     $templateData['fieldMethod'] = $field->getName();
                     $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/string-builder-static.phtml')
                         ->setData($templateData)

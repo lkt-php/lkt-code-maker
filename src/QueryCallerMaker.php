@@ -2,7 +2,6 @@
 
 namespace Lkt\CodeMaker;
 
-use Lkt\CodeMaker\Helpers\FieldsCodeHelper;
 use Lkt\CodeMaker\Helpers\FieldsQueryCallerHelper;
 use Lkt\Factory\Instantiator\Instances\AbstractInstance;
 use Lkt\Factory\Schemas\Schema;

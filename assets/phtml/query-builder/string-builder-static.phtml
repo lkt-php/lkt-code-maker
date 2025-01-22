@@ -6,8 +6,7 @@
  * @var bool $canBeNull
  * @var bool $isI18n
  * @var array $comparatorsIn
- * @var array $optionsMethods
- * @var array $options
+ * @var string[] $optionsToMethods
  */
 $i18nPrepend = $isI18n ? 'i18nS' : 's';
 ?>
@@ -62,13 +61,13 @@ public static function <?php echo $fieldMethod;?>IsNotNull() {
 }
 <?php endif; ?>
 
-<?php if($optionsMethods): ?>
-    <?php foreach ($optionsMethods as $i => $option): ?>
+<?php if($optionsToMethods): ?>
+    <?php foreach ($optionsToMethods as $optionValue => $option): ?>
         public static function <?php echo $fieldMethod;?>Is<?php echo $option; ?>() {
-            return static::<?php echo $i18nPrepend; ?>tringEqual('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return static::<?php echo $i18nPrepend; ?>tringEqual('<?php echo $column;?>', '<?php echo $optionValue; ?>');
         }
         public static function <?php echo $fieldMethod;?>IsNot<?php echo $option; ?>() {
-            return static::<?php echo $i18nPrepend; ?>tringNot('<?php echo $column;?>', '<?php echo $options[$i]; ?>');
+            return static::<?php echo $i18nPrepend; ?>tringNot('<?php echo $column;?>', '<?php echo $optionValue; ?>');
         }
     <?php endforeach; ?>
 <?php endif; ?>

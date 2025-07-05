@@ -103,6 +103,7 @@ class FieldsCodeHelper
                     ->parse();
                 continue;
             } elseif ($field instanceof IntegerField) {
+                $templateData['isMultiple'] = $field->isMultiple();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-field.phtml')
                     ->setData($templateData)
                     ->parse();

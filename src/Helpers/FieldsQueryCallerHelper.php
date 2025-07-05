@@ -46,7 +46,7 @@ class FieldsQueryCallerHelper
                 'canBeNull' => false,
             ];
 
-            if ($field instanceof ForeignKeyField || $field instanceof IntegerField) {
+            if ($field instanceof ForeignKeyField || ($field instanceof IntegerField && !$field->isMultiple())) {
                 $templateData['canBeNull'] =  $field->canBeNull();
 
                 if ($field instanceof IntegerChoiceField) {
@@ -149,7 +149,7 @@ class FieldsQueryCallerHelper
             }
 
 
-            if ($field instanceof ForeignKeysField) {
+            if ($field instanceof ForeignKeysField || ($field instanceof IntegerField && $field->isMultiple())) {
                 $templateData['canBeNull'] =  $field->canBeNull();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/query-builder/foreign-keys-builder.phtml')
                     ->setData($templateData)

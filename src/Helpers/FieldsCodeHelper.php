@@ -98,6 +98,7 @@ class FieldsCodeHelper
                 $templateData['options'] = $options;
                 $templateData['optionsMethods'] = $optionsMethods;
                 $templateData['comparatorsIn'] = $field->getComparatorsIn();
+                $templateData['isMultiple'] = $field->isMultiple();
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-choice-field.phtml')
                     ->setData($templateData)
                     ->parse();

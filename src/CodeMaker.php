@@ -24,32 +24,32 @@ class CodeMaker
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getAppClass();
+            $className = $instanceSettings?->getAppClass();
             $returnSelf = '\\' . $className;
 
-            $extends = $instanceSettings->hasLegalExtendClass()
-                ? $instanceSettings->getClassToBeExtended()
+            $extends = $instanceSettings?->hasLegalExtendClass()
+                ? $instanceSettings?->getClassToBeExtended()
                 : AbstractInstance::class;
 
             $extends = '\\'. $extends;
 
-            $implements = $instanceSettings->getImplementedInterfacesAsString();
+            $implements = $instanceSettings?->getImplementedInterfacesAsString();
             if ($implements !== ''){
                 $implements = "implements {$implements};";
             }
 
-            $traits = $instanceSettings->getUsedTraitsAsString();
+            $traits = $instanceSettings?->getUsedTraitsAsString();
             if ($traits !== ''){
                 $traits = "use {$traits};";
             }
 
-            $namespace = $instanceSettings->getNamespaceForGeneratedClass();
+            $namespace = $instanceSettings?->getNamespaceForGeneratedClass();
 
 
             $methods = FieldsCodeHelper::makeFieldsCode($schema);
 
 
-            $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
+            $relatedQueryCaller = $schema->getInstanceSettings()?->getQueryCallerFQDN();
 
             $templateData['relatedQueryCaller'] = '\Lkt\QueryCaller\QueryCaller';
 
@@ -60,7 +60,7 @@ class CodeMaker
 
             $code = Template::file(__DIR__ . '/../assets/phtml/class-template.phtml')->setData([
                 'component' => $component,
-                'className' => $instanceSettings->getClassNameForGeneratedClass(),
+                'className' => $instanceSettings?->getClassNameForGeneratedClass(),
                 'extends' => $extends,
                 'implements' => $implements,
                 'traits' => $traits,
@@ -74,8 +74,8 @@ class CodeMaker
             $code = removeDuplicatedWhiteSpaces($code);
             $code = '<?php ' .$code;
 
-            $filePath = $instanceSettings->getGeneratedClassFullPath();
-            $status = file_put_contents($filePath, $code);
+            $filePath = $instanceSettings?->getGeneratedClassFullPath();
+            $status = $filePath ? file_put_contents($filePath, $code) : false;
             if ($status === false) {
                 echo "Could't store {$filePath}\n";
                 echo "Maybe an invalid path or not enough permissions\n";

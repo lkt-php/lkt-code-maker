@@ -26,7 +26,7 @@ class GroupByMaker
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getAppClass();
+            $className = $instanceSettings?->getAppClass();
             if ($className === '') {
                 echo "Component without Order By: {$component}...\n";
                 continue;
@@ -36,16 +36,16 @@ class GroupByMaker
             $className .= 'GroupBy';
             $returnSelf = '\\' . $className;
 
-            $extends = $instanceSettings->hasLegalExtendClass()
-                ? $instanceSettings->getClassToBeExtended()
+            $extends = $instanceSettings?->hasLegalExtendClass()
+                ? $instanceSettings?->getClassToBeExtended()
                 : AbstractInstance::class;
 
             $extends = '\\'. $extends;
 
-            $namespace = $instanceSettings->getNamespaceForGeneratedClass();
+            $namespace = $instanceSettings?->getNamespaceForGeneratedClass();
 
 
-            $relatedQueryCaller = [$instanceSettings->getNamespaceForGeneratedClass(), $className];
+            $relatedQueryCaller = [$instanceSettings?->getNamespaceForGeneratedClass(), $className];
             $relatedQueryCaller = implode('\\', $relatedQueryCaller);
 
             $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\OrderBy';
@@ -70,12 +70,12 @@ class GroupByMaker
 
 
             $filePath = '';
-            if ($instanceSettings->hasWhereStoreGeneratedClass()) {
-                $filePath .= $instanceSettings->getWhereStoreGeneratedClass() . '/';
+            if ($instanceSettings?->hasWhereStoreGeneratedClass()) {
+                $filePath .= $instanceSettings?->getWhereStoreGeneratedClass() . '/';
             }
 
             $filePath .=  "{$className}.php";
-            $status = file_put_contents($filePath, $code);
+            $status = $filePath ? file_put_contents($filePath, $code) : false;
             if ($status === false) {
                 echo "Could't store {$filePath}\n";
                 echo "Maybe an invalid path or not enough permissions\n";

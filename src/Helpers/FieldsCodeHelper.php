@@ -39,7 +39,7 @@ class FieldsCodeHelper
     {
         $instanceSettings = $schema->getInstanceSettings();
 
-        $className = $instanceSettings->getAppClass();
+        $className = $instanceSettings?->getAppClass();
         $returnSelf = '\\' . $className;
 
         $methods = [];

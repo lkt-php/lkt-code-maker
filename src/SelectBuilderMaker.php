@@ -27,7 +27,7 @@ class SelectBuilderMaker
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getAppClass();
+            $className = $instanceSettings?->getAppClass();
             if ($className === '') {
                 echo "Component without Order By: {$component}...\n";
                 continue;
@@ -37,16 +37,16 @@ class SelectBuilderMaker
             $className .= 'SelectBuilder';
             $returnSelf = '\\' . $className;
 
-            $extends = $instanceSettings->hasLegalExtendClass()
-                ? $instanceSettings->getClassToBeExtended()
+            $extends = $instanceSettings?->hasLegalExtendClass()
+                ? $instanceSettings?->getClassToBeExtended()
                 : AbstractInstance::class;
 
             $extends = '\\'. $extends;
 
-            $namespace = $instanceSettings->getNamespaceForGeneratedClass();
+            $namespace = $instanceSettings?->getNamespaceForGeneratedClass();
 
 
-            $relatedQueryCaller = [$instanceSettings->getNamespaceForGeneratedClass(), $className];
+            $relatedQueryCaller = [$instanceSettings?->getNamespaceForGeneratedClass(), $className];
             $relatedQueryCaller = implode('\\', $relatedQueryCaller);
 
             $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\SelectBuilder';
@@ -71,8 +71,8 @@ class SelectBuilderMaker
 
 
             $filePath = '';
-            if ($instanceSettings->hasWhereStoreGeneratedClass()) {
-                $filePath .= $instanceSettings->getWhereStoreGeneratedClass() . '/';
+            if ($instanceSettings?->hasWhereStoreGeneratedClass()) {
+                $filePath .= $instanceSettings?->getWhereStoreGeneratedClass() . '/';
             }
 
             $filePath .=  "{$className}.php";

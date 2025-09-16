@@ -26,7 +26,7 @@ class WhereMaker
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getWhereClassName();
+            $className = $instanceSettings?->getWhereClassName();
             if ($className === '') {
                 $className = $instanceSettings->getAppClass();
                 if ($className === '') {
@@ -39,15 +39,15 @@ class WhereMaker
             }
             $returnSelf = '\\' . $className;
 
-            $extends = $instanceSettings->hasLegalExtendClass()
-                ? $instanceSettings->getClassToBeExtended()
+            $extends = $instanceSettings?->hasLegalExtendClass()
+                ? $instanceSettings?->getClassToBeExtended()
                 : AbstractInstance::class;
 
             $extends = '\\'. $extends;
 
-            $namespace = $instanceSettings->getNamespaceForGeneratedClass();
+            $namespace = $instanceSettings?->getNamespaceForGeneratedClass();
 
-            $relatedQueryCaller = $schema->getInstanceSettings()->getWhereFQDN();
+            $relatedQueryCaller = $schema?->getInstanceSettings()?->getWhereFQDN();
 
             $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\Where';
 
@@ -69,8 +69,8 @@ class WhereMaker
             $code = removeDuplicatedWhiteSpaces($code);
             $code = '<?php ' .$code;
 
-            $filePath = $instanceSettings->getWhereFullPath();
-            $status = file_put_contents($filePath, $code);
+            $filePath = $instanceSettings?->getWhereFullPath();
+            $status = $filePath ? file_put_contents($filePath, $code) : false;
             if ($status === false) {
                 echo "Could't store {$filePath}\n";
                 echo "Maybe an invalid path or not enough permissions\n";

@@ -23,9 +23,9 @@ class FieldsSelectBuilderHelper
     {
         $instanceSettings = $schema->getInstanceSettings();
 
-        $className = $instanceSettings->getQueryCallerFQDN();
+        $className = $instanceSettings?->getQueryCallerFQDN();
         if ($includeStatic) {
-            $className = $instanceSettings->getWhereFQDN();
+            $className = $instanceSettings?->getWhereFQDN();
         }
         $returnSelf = '\\' . $className;
 

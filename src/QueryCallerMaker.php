@@ -26,9 +26,9 @@ class QueryCallerMaker
 
             $instanceSettings = $schema->getInstanceSettings();
 
-            $className = $instanceSettings->getQueryCallerClassName();
+            $className = $instanceSettings?->getQueryCallerClassName();
             if ($className === '') {
-                $className = $instanceSettings->getAppClass();
+                $className = $instanceSettings?->getAppClass();
                 if ($className === '') {
                     echo "Component without Query Builder: {$component}...\n";
                     continue;
@@ -39,25 +39,25 @@ class QueryCallerMaker
             }
             $returnSelf = '\\' . $className;
 
-            $extends = $instanceSettings->hasLegalExtendClass()
-                ? $instanceSettings->getClassToBeExtended()
+            $extends = $instanceSettings?->hasLegalExtendClass()
+                ? $instanceSettings?->getClassToBeExtended()
                 : AbstractInstance::class;
 
             $extends = '\\'. $extends;
 
-            $implements = $instanceSettings->getImplementedInterfacesAsString();
+            $implements = $instanceSettings?->getImplementedInterfacesAsString();
             if ($implements !== ''){
                 $implements = "implements {$implements};";
             }
 
-            $traits = $instanceSettings->getUsedTraitsAsString();
+            $traits = $instanceSettings?->getUsedTraitsAsString();
             if ($traits !== ''){
                 $traits = "use {$traits};";
             }
 
-            $namespace = $instanceSettings->getNamespaceForGeneratedClass();
+            $namespace = $instanceSettings?->getNamespaceForGeneratedClass();
 
-            $relatedQueryCaller = $schema->getInstanceSettings()->getQueryCallerFQDN();
+            $relatedQueryCaller = $schema->getInstanceSettings()?->getQueryCallerFQDN();
 
             $templateData['relatedQueryCaller'] = '\Lkt\QueryBuilding\Query';
 
@@ -80,8 +80,8 @@ class QueryCallerMaker
             $code = removeDuplicatedWhiteSpaces($code);
             $code = '<?php ' .$code;
 
-            $filePath = $instanceSettings->getQueryCallerFullPath();
-            $status = file_put_contents($filePath, $code);
+            $filePath = $instanceSettings?->getQueryCallerFullPath();
+            $status = $filePath ? file_put_contents($filePath, $code) : false;
             if ($status === false) {
                 echo "Could't store {$filePath}\n";
                 echo "Maybe an invalid path or not enough permissions\n";

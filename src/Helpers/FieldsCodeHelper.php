@@ -247,6 +247,7 @@ class FieldsCodeHelper
             if ($field instanceof FileField) {
                 $templateData['isPublic'] = $field->getPublicPath() !== '';
                 $templateData['publicPath'] = $field->getPublicPath();
+                $templateData['isMultiple'] = $field->isMultiple();
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/file-field.phtml')
                     ->setData($templateData)

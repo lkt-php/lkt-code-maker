@@ -5,11 +5,35 @@
  * @var string $returnSelf
  * @var string $publicPath
  * @var bool $isPublic
+ * @var bool $isMultiple
  */
 ?>
 public function get<?php echo $fieldMethod;?>() {
     return $this->_getFileVal('<?php echo $fieldName;?>');
 }
+<?php if ($isMultiple): ?>
+public function get<?php echo $fieldMethod;?>InternalPath() :array {
+    return $this->_getInternalPath('<?php echo $fieldName;?>');
+}
+public function get<?php echo $fieldMethod;?>Name(int $index = 0) :string {
+    return $this->_getFileName('<?php echo $fieldName;?>', $index);
+}
+public function get<?php echo $fieldMethod;?>Extension(int $index = 0) :string {
+    return $this->_getFileExtension('<?php echo $fieldName;?>', $index);
+}
+public function get<?php echo $fieldMethod;?>Content(int $index = 0) :string {
+    return $this->_getFileContent('<?php echo $fieldName;?>', $index);
+}
+public function get<?php echo $fieldMethod;?>LastModified(int $index = 0) :int|false {
+    return $this->_getFileLastModified('<?php echo $fieldName;?>', $index);
+}
+public function get<?php echo $fieldMethod;?>Size(int $index = 0) :int|false {
+    return $this->_getFileSize('<?php echo $fieldName;?>', $index);
+}
+public function get<?php echo $fieldMethod;?>PublicPath() :array {
+    return $this->_getPublicPath('<?php echo $fieldName;?>');
+}
+<?php else: ?>
 public function get<?php echo $fieldMethod;?>InternalPath() :string {
     return $this->_getInternalPath('<?php echo $fieldName;?>');
 }
@@ -31,6 +55,7 @@ public function get<?php echo $fieldMethod;?>Size() :int|false {
 public function get<?php echo $fieldMethod;?>PublicPath() :string {
     return $this->_getPublicPath('<?php echo $fieldName;?>');
 }
+<?php endif; ?>
 public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasFileVal('<?php echo $fieldName;?>');
 }

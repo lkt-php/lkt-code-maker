@@ -21,4 +21,7 @@ public static function year<?php echo ucfirst($fieldMethod);?>(?string $as = nul
 
 public function andMonth<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andMonthDatum('<?php echo $column;?>', $as); }
 public static function month<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return static::monthDatum('<?php echo $column;?>', $as); }
+
+public function andExtractYearMonth<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return $this->andExtractYearMonthDatum('<?php echo $column;?>', $as); }
+public static function extractYearMonth<?php echo ucfirst($fieldMethod);?>(?string $as = null): static { return static::extractYearMonthDatum('<?php echo $column;?>', $as); }
 <?php endif;?>

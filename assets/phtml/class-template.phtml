@@ -72,10 +72,10 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
     /**
     * @return <?php echo $returnSelf;?>[]
     */
-    public static function getPage(int $page, Query $builder = null): array
+    public static function getPage(int $page, Query $builder = null, int $itemsPerPage = 0): array
     {
         /** @var <?php echo $returnSelf;?>[] */
-        $r = parent::getPage($page, $builder);
+        $r = parent::getPage($page, $builder, $itemsPerPage);
         return $r;
     }
     <?php endif; ?>

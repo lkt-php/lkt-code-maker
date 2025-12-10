@@ -2,6 +2,7 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\Factory\Schemas\CompositionSchema;
 use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringAboveMinLengthComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringBelowMaxLengthComputedField;
@@ -32,6 +33,7 @@ use Lkt\Factory\Schemas\Fields\UnixTimeStampField;
 use Lkt\Factory\Schemas\Fields\ValueListField;
 use Lkt\Factory\Schemas\Schema;
 use Lkt\Templates\Template;
+use function PHPUnit\Framework\isInstanceOf;
 
 class FieldsCodeHelper
 {
@@ -345,6 +347,106 @@ class FieldsCodeHelper
                     ->setData($templateData)
                     ->parse();
                 continue;
+            }
+        }
+
+        $compositionSchema = CompositionSchema::get($schema->getComponent());
+        if ($compositionSchema) {
+            foreach ($compositionSchema->getAllCompositionContent() as $compositionContent) {
+
+                $compositionField = $compositionContent->getRelatedField();
+                $compositionFieldName = $compositionField->getName();
+                $composedComponent = $compositionField->getComponent();
+                $composedSchema = Schema::get($composedComponent);
+
+                foreach ($compositionContent->fields as $fieldName => $composedFieldName) {
+                    $fieldMethod = ucfirst($fieldName);
+
+                    $composedField = $composedSchema->getField($composedFieldName);
+
+                    $composedPrimitiveInputType = 'mixed';
+                    $composedPrimitiveReturnType = 'mixed';
+                    $composedInstanceReturnType = '';
+                    $composedDocReturn = '';
+
+                    if ($composedField instanceof ForeignKeyField) {
+
+                    } elseif ($composedField instanceof IntegerField) {
+                        if ($composedField->isMultiple()) {
+                            $composedInstanceReturnType = '@return int[]';
+                            $composedPrimitiveReturnType = 'array';
+                            $composedPrimitiveInputType = 'array';
+                        } else {
+                            $composedPrimitiveReturnType = 'int';
+                            $composedPrimitiveInputType = 'int';
+                        }
+
+                    } elseif ($composedField instanceof StringField || $composedField instanceof HTMLField || $composedField instanceof EncryptField || $composedField instanceof ColorField || $composedField instanceof ConcatField) {
+                        $composedPrimitiveReturnType = 'string';
+                        $composedPrimitiveInputType = 'string';
+
+                    } elseif ($composedField instanceof BooleanField || $composedField instanceof BooleansComputedField || $composedField instanceof StringEqualComputedField || $composedField instanceof StringInComputedField || $field instanceof StringAboveMinLengthComputedField || $field instanceof StringBelowMaxLengthComputedField || $field instanceof StringBetweenMinAndMaxLengthComputedField) {
+                        $composedPrimitiveReturnType = 'bool';
+                        $composedPrimitiveInputType = 'bool';
+
+                    } elseif ($composedField instanceof FloatField) {
+                        $composedPrimitiveReturnType = 'float';
+                        $composedPrimitiveInputType = 'float';
+
+                    } elseif ($composedField instanceof DateTimeField || $field instanceof UnixTimeStampField) {
+                        $composedPrimitiveReturnType = '?\Carbon\Carbon';
+                        $composedPrimitiveInputType = '\Carbon\Carbon|\DateTime|string|int|null';
+
+                    } elseif ($composedField instanceof ForeignKeysField || $field instanceof RelatedField || $field instanceof RelatedKeysField || $field instanceof PivotField) {
+                        $relatedSchema = Schema::get($composedField->getComponent());
+                        $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+
+                        if (method_exists($composedField, 'isSingleMode') && $composedField->isSingleMode()) {
+                            $composedInstanceReturnType = ':?\\' . $relatedClassName;
+                            $composedDocReturn = '@return \\' . $relatedClassName . '|null';
+                        } else {
+                            $composedInstanceReturnType = ':?\\' . $relatedClassName;
+                            $composedDocReturn = '@return \\' . $relatedClassName . '[]';
+                        }
+
+                        //@TODO $composedPrimitiveInputType
+
+                    } elseif ($composedField instanceof FileField) {
+
+                    } elseif ($composedField instanceof JSONField) {
+                        if ($composedField->isAssoc()) {
+                            $composedPrimitiveReturnType = '?array';
+                            $composedPrimitiveInputType = 'array';
+                        } else {
+                            $composedPrimitiveReturnType = '?\StdClass';
+                            $composedPrimitiveInputType = '\StdClass';
+                        }
+
+                    } elseif ($composedField instanceof RelatedKeysMergeField) {
+                        $composedPrimitiveReturnType = 'array';
+                        $composedPrimitiveInputType = 'array';
+                    }
+
+                    if ($composedPrimitiveReturnType !== '') $composedPrimitiveReturnType = ":{$composedPrimitiveReturnType}";
+
+                    $templateData = [
+                        'fieldName' => $fieldName,
+                        'fieldMethod' => $fieldMethod,
+                        'composedComponent' => $composedComponent,
+                        'composedFieldName' => $composedFieldName,
+                        'compositionFieldName' => $compositionFieldName,
+                        'composedInstanceReturnType' => $composedInstanceReturnType,
+                        'composedDocReturn' => $composedDocReturn,
+                        'composedPrimitiveReturnType' => $composedPrimitiveReturnType,
+                        'composedPrimitiveInputType' => $composedPrimitiveInputType,
+                        'returnSelf' => $returnSelf,
+                    ];
+
+
+                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/composed-field.phtml')
+                        ->setData($templateData)
+                        ->parse();
+                }
             }
         }
 

@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var string $fieldName
+ * @var string $fieldMethod
+ * @var string $composedComponent
+ * @var string $composedFieldName
+ * @var string $compositionFieldName
+ * @var string $returnSelf
+ * @var string $composedInstanceReturnType
+ * @var string $composedDocReturn
+ * @var string $composedPrimitiveReturnType
+ * @var string $composedPrimitiveInputType
+ */
+?>
+public function get<?php echo $fieldMethod;?>() <?php echo $composedPrimitiveReturnType;?> {
+    return $this->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>');
+}
+/** @return <?php echo $returnSelf;?>
+ */
+public function set<?php echo $fieldMethod;?>(<?php echo $composedPrimitiveInputType; ?> $<?php echo $fieldName;?>)  {
+    $this->_setCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>);
+    return $this;
+}
+public function has<?php echo $fieldMethod;?>() :bool {
+    return $this->_hasCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>');
+}

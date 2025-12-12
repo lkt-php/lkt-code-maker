@@ -198,6 +198,25 @@ class FieldsCodeHelper
                     if ($relatedQueryCaller) {
                         $templateData['relatedQueryCaller'] = '\\' . $relatedQueryCaller;
                     }
+
+                    if ($relatedSchema->hasComplexPrimaryKey()) {
+                        $relatedIdentifiers = $relatedSchema->getIdentifiers();
+                        $additionalInput = [];
+                        $additionalInputDetection = [];
+                        foreach ($relatedIdentifiers  as $relatedIdentifier) {
+                            if ($relatedIdentifier->getColumn() === $field->getColumn()) continue;
+
+
+                            $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
+                            $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
+
+                            $additionalInput[] = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                            $additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()},";
+                        }
+
+                        $templateData['additionalInput'] = implode(', ', $additionalInput);
+                        $templateData['additionalInputDetection'] = implode(', ', $additionalInputDetection);
+                    }
                 }
 
                 if ($field instanceof RelatedField) {
@@ -368,34 +387,60 @@ class FieldsCodeHelper
                     $composedPrimitiveReturnType = 'mixed';
                     $composedInstanceReturnType = '';
                     $composedDocReturn = '';
+                    $additionalFields = '';
+                    $additionalInput = '';
+                    $additionalInputDetection = '';
+
+
+                    if ($composedSchema->hasComplexPrimaryKey()) {
+                        $relatedIdentifiers = $composedSchema->getIdentifiers();
+                        $_additionalInput = [];
+                        $_additionalInputDetection = [];
+                        foreach ($relatedIdentifiers  as $relatedIdentifier) {
+                            if ($relatedIdentifier->getColumn() === $compositionField->getColumn()) continue;
+
+
+                            $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
+                            $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
+
+                            $_additionalInput[] = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                            $_additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()},";
+                        }
+
+                        $additionalInput = implode(', ', $_additionalInput);
+                        $additionalInputDetection = implode(', ', $_additionalInputDetection);
+                    }
 
                     if ($composedField instanceof ForeignKeyField) {
 
                     } elseif ($composedField instanceof IntegerField) {
                         if ($composedField->isMultiple()) {
                             $composedInstanceReturnType = '@return int[]';
-                            $composedPrimitiveReturnType = 'array';
+                            $composedPrimitiveReturnType = '?array';
                             $composedPrimitiveInputType = 'array';
                         } else {
-                            $composedPrimitiveReturnType = 'int';
+                            $composedPrimitiveReturnType = '?int';
                             $composedPrimitiveInputType = 'int';
                         }
 
                     } elseif ($composedField instanceof StringField || $composedField instanceof HTMLField || $composedField instanceof EncryptField || $composedField instanceof ColorField || $composedField instanceof ConcatField) {
-                        $composedPrimitiveReturnType = 'string';
+                        $composedPrimitiveReturnType = '?string';
                         $composedPrimitiveInputType = 'string';
 
                     } elseif ($composedField instanceof BooleanField || $composedField instanceof BooleansComputedField || $composedField instanceof StringEqualComputedField || $composedField instanceof StringInComputedField || $field instanceof StringAboveMinLengthComputedField || $field instanceof StringBelowMaxLengthComputedField || $field instanceof StringBetweenMinAndMaxLengthComputedField) {
-                        $composedPrimitiveReturnType = 'bool';
+                        $composedPrimitiveReturnType = '?bool';
                         $composedPrimitiveInputType = 'bool';
 
                     } elseif ($composedField instanceof FloatField) {
-                        $composedPrimitiveReturnType = 'float';
+                        $composedPrimitiveReturnType = '?float';
                         $composedPrimitiveInputType = 'float';
 
                     } elseif ($composedField instanceof DateTimeField || $field instanceof UnixTimeStampField) {
                         $composedPrimitiveReturnType = '?\Carbon\Carbon';
                         $composedPrimitiveInputType = '\Carbon\Carbon|\DateTime|string|int|null';
+
+                    } elseif ($composedField instanceof FileField) {
+                        $additionalFields = $composedField->isMultiple() ? 'files' : 'file';
 
                     } elseif ($composedField instanceof ForeignKeysField || $field instanceof RelatedField || $field instanceof RelatedKeysField || $field instanceof PivotField) {
                         $relatedSchema = Schema::get($composedField->getComponent());
@@ -410,8 +455,6 @@ class FieldsCodeHelper
                         }
 
                         //@TODO $composedPrimitiveInputType
-
-                    } elseif ($composedField instanceof FileField) {
 
                     } elseif ($composedField instanceof JSONField) {
                         if ($composedField->isAssoc()) {
@@ -440,6 +483,9 @@ class FieldsCodeHelper
                         'composedPrimitiveReturnType' => $composedPrimitiveReturnType,
                         'composedPrimitiveInputType' => $composedPrimitiveInputType,
                         'returnSelf' => $returnSelf,
+                        'additionalFields' => $additionalFields,
+                        'additionalInput' => $additionalInput,
+                        'additionalInputDetection' => $additionalInputDetection,
                     ];
 
 

@@ -374,14 +374,13 @@ class FieldsCodeHelper
             foreach ($compositionSchema->getAllCompositionContent() as $compositionContent) {
 
                 $compositionField = $compositionContent->getRelatedField();
+                $nestedCompositionField = $compositionContent->getRelatedField();
                 $compositionFieldName = $compositionField->getName();
                 $composedComponent = $compositionField->getComponent();
                 $composedSchema = Schema::get($composedComponent);
+                $nestedComposedSchema = Schema::get($composedComponent);
 
                 foreach ($compositionContent->fields as $fieldName => $composedFieldName) {
-                    $fieldMethod = ucfirst($fieldName);
-
-                    $composedField = $composedSchema->getField($composedFieldName);
 
                     $composedPrimitiveInputType = 'mixed';
                     $composedPrimitiveReturnType = 'mixed';
@@ -391,21 +390,53 @@ class FieldsCodeHelper
                     $additionalInput = '';
                     $additionalInputDetection = '';
 
+                    $nestedCompositionLevel = 1;
 
-                    if ($composedSchema->hasComplexPrimaryKey()) {
-                        $relatedIdentifiers = $composedSchema->getIdentifiers();
+                    $fieldMethod = ucfirst($fieldName);
+
+                    $composedField = $composedSchema->getField($composedFieldName);
+
+                    if (!$composedField) {
+                        $composedSchemaCompositionSchema = CompositionSchema::get($composedSchema->getComponent());
+                        if (!$composedSchemaCompositionSchema->hasField($composedFieldName)) {
+                            continue;
+                        }
+
+                        $nestedCompositionField = $composedSchemaCompositionSchema->getRelatedFieldHandlingThisField($composedFieldName);
+
+                        $composedField = $composedSchemaCompositionSchema->getField($composedFieldName);
+
+                        if (!$composedField) {
+                            continue;
+                        }
+                        ++$nestedCompositionLevel;
+                        $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
+                    }
+
+
+                    if ($nestedComposedSchema->hasComplexPrimaryKey()) {
+                        $relatedIdentifiers = $nestedComposedSchema->getIdentifiers();
                         $_additionalInput = [];
                         $_additionalInputDetection = [];
                         foreach ($relatedIdentifiers  as $relatedIdentifier) {
-                            if ($relatedIdentifier->getColumn() === $compositionField->getColumn()) continue;
+                            if ($nestedCompositionLevel === 1 && $relatedIdentifier->getColumn() === $compositionField->getColumn()) continue;
 
 
                             $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
                             $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
 
-                            $_additionalInput[] = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
-                            $_additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()},";
+                            $tmpAdditionalInput = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                            $compositionValue = $composedSchemaCompositionSchema?->getCompositionValue($relatedIdentifier->getName());
+                            if ($compositionValue !== null) {
+                                $tmpAdditionalInput .= ' = null';
+                            }
+
+                            $_additionalInput[] = $tmpAdditionalInput;
+                            $_additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()}";
                         }
+
+                        $_additionalInput = array_filter($_additionalInput, function ($d) { return trim($d) !== ''; });
+                        $_additionalInputDetection = array_filter($_additionalInputDetection, function ($d) { return trim($d) !== ''; });
 
                         $additionalInput = implode(', ', $_additionalInput);
                         $additionalInputDetection = implode(', ', $_additionalInputDetection);

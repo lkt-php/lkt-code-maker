@@ -15,12 +15,21 @@
  * @var string $additionalInputDetection
  */
 ?>
+<?php if ($composedPrimitiveInputType === 'bool'): ?>
+public function <?php echo lcfirst($fieldMethod);?>(<?php echo $additionalInput;?>) <?php echo $composedPrimitiveReturnType;?> {
+    $additionalData = [
+        <?php echo $additionalInputDetection;?>
+    ];
+    return $this->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
+}
+<?php else: ?>
 public function get<?php echo $fieldMethod;?>(<?php echo $additionalInput;?>) <?php echo $composedPrimitiveReturnType;?> {
     $additionalData = [
         <?php echo $additionalInputDetection;?>
     ];
     return $this->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
 }
+<?php endif;?>
 /** @return <?php echo $returnSelf;?>
  */
 public function set<?php echo $fieldMethod;?>(<?php echo $additionalInput ? "$additionalInput, " : '';?><?php echo $composedPrimitiveInputType; ?> $<?php echo $fieldName;?>)  {

@@ -369,163 +369,168 @@ class FieldsCodeHelper
             }
         }
 
-        $compositionSchema = CompositionSchema::get($schema->getComponent());
-        if ($compositionSchema) {
-            foreach ($compositionSchema->getAllCompositionContent() as $compositionContent) {
+        foreach ($schema->getCompositionFields() as $compositionField) {
+            $compositionFieldName = $compositionField->getName();
+            $composedComponent = $compositionField->getComponent();
+            $composedSchema = Schema::get($composedComponent);
+            $nestedComposedSchema = Schema::get($composedComponent);
+            $compositionValues = $compositionField->getCompositionValues();
+            dump('====');
 
-                $compositionField = $compositionContent->getRelatedField();
-                $nestedCompositionField = $compositionContent->getRelatedField();
-                $compositionFieldName = $compositionField->getName();
-                $composedComponent = $compositionField->getComponent();
-                $composedSchema = Schema::get($composedComponent);
-                $nestedComposedSchema = Schema::get($composedComponent);
+            foreach ($compositionField->getCompositionContent() as $fieldName => $composedFieldName) {
 
-                foreach ($compositionContent->fields as $fieldName => $composedFieldName) {
+                $composedPrimitiveInputType = 'mixed';
+                $composedPrimitiveReturnType = 'mixed';
+                $composedInstanceReturnType = '';
+                $composedDocReturn = '';
+                $additionalFields = '';
+                $additionalInput = '';
+                $additionalInputDetection = '';
 
-                    $composedPrimitiveInputType = 'mixed';
-                    $composedPrimitiveReturnType = 'mixed';
-                    $composedInstanceReturnType = '';
-                    $composedDocReturn = '';
-                    $additionalFields = '';
-                    $additionalInput = '';
-                    $additionalInputDetection = '';
+                $nestedCompositionLevel = 1;
 
-                    $nestedCompositionLevel = 1;
+                $fieldMethod = ucfirst($fieldName);
 
-                    $fieldMethod = ucfirst($fieldName);
+                $composedField = $composedSchema->getField($composedFieldName);
+                dump($composedField);
 
-                    $composedField = $composedSchema->getField($composedFieldName);
+                if (!$composedField) {
+                    $composedSchemaCompositionSchema = Schema::get($composedSchema->getComponent());
+                    if (!$composedSchemaCompositionSchema->hasField($composedFieldName)) {
+                        continue;
+                    }
+
+                    $nestedCompositionField = $composedSchemaCompositionSchema->getRelatedFieldHandlingThisField($composedFieldName);
+
+                    $composedField = $composedSchemaCompositionSchema->getField($composedFieldName);
 
                     if (!$composedField) {
-                        $composedSchemaCompositionSchema = CompositionSchema::get($composedSchema->getComponent());
-                        if (!$composedSchemaCompositionSchema->hasField($composedFieldName)) {
-                            continue;
-                        }
-
-                        $nestedCompositionField = $composedSchemaCompositionSchema->getRelatedFieldHandlingThisField($composedFieldName);
-
-                        $composedField = $composedSchemaCompositionSchema->getField($composedFieldName);
-
-                        if (!$composedField) {
-                            continue;
-                        }
-                        ++$nestedCompositionLevel;
-                        $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
+                        continue;
                     }
-
-
-                    if ($nestedComposedSchema->hasComplexPrimaryKey()) {
-                        $relatedIdentifiers = $nestedComposedSchema->getIdentifiers();
-                        $_additionalInput = [];
-                        $_additionalInputDetection = [];
-                        foreach ($relatedIdentifiers  as $relatedIdentifier) {
-                            if ($nestedCompositionLevel === 1 && $relatedIdentifier->getColumn() === $compositionField->getColumn()) continue;
-
-
-                            $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
-                            $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
-
-                            $tmpAdditionalInput = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
-                            $compositionValue = $composedSchemaCompositionSchema?->getCompositionValue($relatedIdentifier->getName());
-                            if ($compositionValue !== null) {
-                                $tmpAdditionalInput .= ' = null';
-                            }
-
-                            $_additionalInput[] = $tmpAdditionalInput;
-                            $_additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()}";
-                        }
-
-                        $_additionalInput = array_filter($_additionalInput, function ($d) { return trim($d) !== ''; });
-                        $_additionalInputDetection = array_filter($_additionalInputDetection, function ($d) { return trim($d) !== ''; });
-
-                        $additionalInput = implode(', ', $_additionalInput);
-                        $additionalInputDetection = implode(', ', $_additionalInputDetection);
-                    }
-
-                    if ($composedField instanceof ForeignKeyField) {
-
-                    } elseif ($composedField instanceof IntegerField) {
-                        if ($composedField->isMultiple()) {
-                            $composedInstanceReturnType = '@return int[]';
-                            $composedPrimitiveReturnType = '?array';
-                            $composedPrimitiveInputType = 'array';
-                        } else {
-                            $composedPrimitiveReturnType = '?int';
-                            $composedPrimitiveInputType = 'int';
-                        }
-
-                    } elseif ($composedField instanceof StringField || $composedField instanceof HTMLField || $composedField instanceof EncryptField || $composedField instanceof ColorField || $composedField instanceof ConcatField) {
-                        $composedPrimitiveReturnType = '?string';
-                        $composedPrimitiveInputType = 'string';
-
-                    } elseif ($composedField instanceof BooleanField || $composedField instanceof BooleansComputedField || $composedField instanceof StringEqualComputedField || $composedField instanceof StringInComputedField || $field instanceof StringAboveMinLengthComputedField || $field instanceof StringBelowMaxLengthComputedField || $field instanceof StringBetweenMinAndMaxLengthComputedField) {
-                        $composedPrimitiveReturnType = '?bool';
-                        $composedPrimitiveInputType = 'bool';
-
-                    } elseif ($composedField instanceof FloatField) {
-                        $composedPrimitiveReturnType = '?float';
-                        $composedPrimitiveInputType = 'float';
-
-                    } elseif ($composedField instanceof DateTimeField || $field instanceof UnixTimeStampField) {
-                        $composedPrimitiveReturnType = '?\Carbon\Carbon';
-                        $composedPrimitiveInputType = '\Carbon\Carbon|\DateTime|string|int|null';
-
-                    } elseif ($composedField instanceof FileField) {
-                        $additionalFields = $composedField->isMultiple() ? 'files' : 'file';
-
-                    } elseif ($composedField instanceof ForeignKeysField || $field instanceof RelatedField || $field instanceof RelatedKeysField || $field instanceof PivotField) {
-                        $relatedSchema = Schema::get($composedField->getComponent());
-                        $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
-
-                        if (method_exists($composedField, 'isSingleMode') && $composedField->isSingleMode()) {
-                            $composedInstanceReturnType = ':?\\' . $relatedClassName;
-                            $composedDocReturn = '@return \\' . $relatedClassName . '|null';
-                        } else {
-                            $composedInstanceReturnType = ':?\\' . $relatedClassName;
-                            $composedDocReturn = '@return \\' . $relatedClassName . '[]';
-                        }
-
-                        //@TODO $composedPrimitiveInputType
-
-                    } elseif ($composedField instanceof JSONField) {
-                        if ($composedField->isAssoc()) {
-                            $composedPrimitiveReturnType = '?array';
-                            $composedPrimitiveInputType = 'array';
-                        } else {
-                            $composedPrimitiveReturnType = '?\StdClass';
-                            $composedPrimitiveInputType = '\StdClass';
-                        }
-
-                    } elseif ($composedField instanceof RelatedKeysMergeField) {
-                        $composedPrimitiveReturnType = 'array';
-                        $composedPrimitiveInputType = 'array';
-                    }
-
-                    if ($composedPrimitiveReturnType !== '') $composedPrimitiveReturnType = ":{$composedPrimitiveReturnType}";
-
-                    $templateData = [
-                        'fieldName' => $fieldName,
-                        'fieldMethod' => $fieldMethod,
-                        'composedComponent' => $composedComponent,
-                        'composedFieldName' => $composedFieldName,
-                        'compositionFieldName' => $compositionFieldName,
-                        'composedInstanceReturnType' => $composedInstanceReturnType,
-                        'composedDocReturn' => $composedDocReturn,
-                        'composedPrimitiveReturnType' => $composedPrimitiveReturnType,
-                        'composedPrimitiveInputType' => $composedPrimitiveInputType,
-                        'returnSelf' => $returnSelf,
-                        'additionalFields' => $additionalFields,
-                        'additionalInput' => $additionalInput,
-                        'additionalInputDetection' => $additionalInputDetection,
-                    ];
-
-
-                    $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/composed-field.phtml')
-                        ->setData($templateData)
-                        ->parse();
+                    ++$nestedCompositionLevel;
+                    $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
                 }
+
+
+                if ($nestedComposedSchema->hasComplexPrimaryKey()) {
+                    $relatedIdentifiers = $nestedComposedSchema->getIdentifiers();
+                    $_additionalInput = [];
+                    $_additionalInputDetection = [];
+                    foreach ($relatedIdentifiers  as $relatedIdentifier) {
+                        if ($nestedCompositionLevel === 1 && $relatedIdentifier->getColumn() === $compositionField->getColumn()) continue;
+
+                        $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
+                        $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
+
+                        $tmpAdditionalInput = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                        $compositionValue = $compositionValues[$relatedIdentifier->getName()];
+                        if ($compositionValue !== null) {
+                            $tmpAdditionalInput .= ' = null';
+                        }
+
+                        $_additionalInput[] = $tmpAdditionalInput;
+                        $_additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()}";
+                    }
+
+                    $_additionalInput = array_filter($_additionalInput, function ($d) { return trim($d) !== ''; });
+                    $_additionalInputDetection = array_filter($_additionalInputDetection, function ($d) { return trim($d) !== ''; });
+
+                    $additionalInput = implode(', ', $_additionalInput);
+                    $additionalInputDetection = implode(', ', $_additionalInputDetection);
+                }
+
+                if ($composedField instanceof ForeignKeyField) {
+
+                } elseif ($composedField instanceof IntegerField) {
+                    if ($composedField->isMultiple()) {
+                        $composedInstanceReturnType = '@return int[]';
+                        $composedPrimitiveReturnType = '?array';
+                        $composedPrimitiveInputType = 'array';
+                    } else {
+                        $composedPrimitiveReturnType = '?int';
+                        $composedPrimitiveInputType = 'int';
+                    }
+
+                } elseif ($composedField instanceof StringField || $composedField instanceof HTMLField || $composedField instanceof EncryptField || $composedField instanceof ColorField || $composedField instanceof ConcatField) {
+                    $composedPrimitiveReturnType = '?string';
+                    $composedPrimitiveInputType = 'string';
+
+                } elseif ($composedField instanceof BooleanField || $composedField instanceof BooleansComputedField || $composedField instanceof StringEqualComputedField || $composedField instanceof StringInComputedField || $field instanceof StringAboveMinLengthComputedField || $field instanceof StringBelowMaxLengthComputedField || $field instanceof StringBetweenMinAndMaxLengthComputedField) {
+                    $composedPrimitiveReturnType = '?bool';
+                    $composedPrimitiveInputType = 'bool';
+
+                } elseif ($composedField instanceof FloatField) {
+                    $composedPrimitiveReturnType = '?float';
+                    $composedPrimitiveInputType = 'float';
+
+                } elseif ($composedField instanceof DateTimeField || $field instanceof UnixTimeStampField) {
+                    $composedPrimitiveReturnType = '?\Carbon\Carbon';
+                    $composedPrimitiveInputType = '\Carbon\Carbon|\DateTime|string|int|null';
+
+                } elseif ($composedField instanceof FileField) {
+                    $additionalFields = $composedField->isMultiple() ? 'files' : 'file';
+
+                } elseif ($composedField instanceof ForeignKeysField || $field instanceof RelatedField || $field instanceof RelatedKeysField || $field instanceof PivotField) {
+                    $relatedSchema = Schema::get($composedField->getComponent());
+                    $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
+
+                    if (method_exists($composedField, 'isSingleMode') && $composedField->isSingleMode()) {
+                        $composedInstanceReturnType = ':?\\' . $relatedClassName;
+                        $composedDocReturn = '@return \\' . $relatedClassName . '|null';
+                    } else {
+                        $composedInstanceReturnType = ':?\\' . $relatedClassName;
+                        $composedDocReturn = '@return \\' . $relatedClassName . '[]';
+                    }
+
+                    //@TODO $composedPrimitiveInputType
+
+                } elseif ($composedField instanceof JSONField) {
+                    if ($composedField->isAssoc()) {
+                        $composedPrimitiveReturnType = '?array';
+                        $composedPrimitiveInputType = 'array';
+                    } else {
+                        $composedPrimitiveReturnType = '?\StdClass';
+                        $composedPrimitiveInputType = '\StdClass';
+                    }
+
+                } elseif ($composedField instanceof RelatedKeysMergeField) {
+                    $composedPrimitiveReturnType = 'array';
+                    $composedPrimitiveInputType = 'array';
+                }
+
+                if ($composedPrimitiveReturnType !== '') $composedPrimitiveReturnType = ":{$composedPrimitiveReturnType}";
+
+                $templateData = [
+                    'fieldName' => $fieldName,
+                    'fieldMethod' => $fieldMethod,
+                    'composedComponent' => $composedComponent,
+                    'composedFieldName' => $composedFieldName,
+                    'compositionFieldName' => $compositionFieldName,
+                    'composedInstanceReturnType' => $composedInstanceReturnType,
+                    'composedDocReturn' => $composedDocReturn,
+                    'composedPrimitiveReturnType' => $composedPrimitiveReturnType,
+                    'composedPrimitiveInputType' => $composedPrimitiveInputType,
+                    'returnSelf' => $returnSelf,
+                    'additionalFields' => $additionalFields,
+                    'additionalInput' => $additionalInput,
+                    'additionalInputDetection' => $additionalInputDetection,
+                ];
+
+
+                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/composed-field.phtml')
+                    ->setData($templateData)
+                    ->parse();
             }
         }
+
+//        $compositionSchema = CompositionSchema::get($schema->getComponent());
+//        if ($compositionSchema) {
+//            foreach ($compositionSchema->getAllCompositionContent() as $compositionContent) {
+//
+//                $compositionField = $compositionContent->getRelatedField();
+//
+//            }
+//        }
 
         return implode("\n", $methods);
     }

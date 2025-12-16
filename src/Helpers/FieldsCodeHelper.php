@@ -375,7 +375,6 @@ class FieldsCodeHelper
             $composedSchema = Schema::get($composedComponent);
             $nestedComposedSchema = Schema::get($composedComponent);
             $compositionValues = $compositionField->getCompositionValues();
-            dump('====');
 
             foreach ($compositionField->getCompositionContent() as $fieldName => $composedFieldName) {
 
@@ -392,17 +391,13 @@ class FieldsCodeHelper
                 $fieldMethod = ucfirst($fieldName);
 
                 $composedField = $composedSchema->getField($composedFieldName);
-                dump($composedField);
 
                 if (!$composedField) {
-                    $composedSchemaCompositionSchema = Schema::get($composedSchema->getComponent());
-                    if (!$composedSchemaCompositionSchema->hasField($composedFieldName)) {
-                        continue;
-                    }
+                    $nestedCompositionField = $composedSchema->getCompositionFieldComposingThisField($composedFieldName);
+                    dd($nestedCompositionField);
+                    dd($composedSchema);
 
-                    $nestedCompositionField = $composedSchemaCompositionSchema->getRelatedFieldHandlingThisField($composedFieldName);
-
-                    $composedField = $composedSchemaCompositionSchema->getField($composedFieldName);
+                    $composedField = $composedSchema->getField($composedFieldName);
 
                     if (!$composedField) {
                         continue;

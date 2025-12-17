@@ -13,81 +13,83 @@
  * @var string $additionalFields
  * @var string $additionalInput
  * @var string $additionalInputDetection
+ * @var string $nestedCompositionCalls
+ * @var string $prepareCompositionDataWithField
  */
 ?>
 <?php if ($composedPrimitiveInputType === 'bool'): ?>
 public function <?php echo lcfirst($fieldMethod);?>(<?php echo $additionalInput;?>) <?php echo $composedPrimitiveReturnType;?> {
-    $additionalData = [
+    $additionalData = $this->_getCompositionAdditionalData([
         <?php echo $additionalInputDetection;?>
-    ];
-    return $this->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
+    ], null, null, null);
+    return $this<?php echo $nestedCompositionCalls?>->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
 }
 <?php else: ?>
 public function get<?php echo $fieldMethod;?>(<?php echo $additionalInput;?>) <?php echo $composedPrimitiveReturnType;?> {
-    $additionalData = [
+    $additionalData = $this->_getCompositionAdditionalData([
         <?php echo $additionalInputDetection;?>
-    ];
-    return $this->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
+    ], null, null, null);
+    return $this<?php echo $nestedCompositionCalls?>->_getCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
 }
 <?php endif;?>
 /** @return <?php echo $returnSelf;?>
  */
 public function set<?php echo $fieldMethod;?>(<?php echo $additionalInput ? "$additionalInput, " : '';?><?php echo $composedPrimitiveInputType; ?> $<?php echo $fieldName;?>)  {
-    $additionalData = [
+    $additionalData = $this->_getCompositionAdditionalData([
         <?php echo $additionalInputDetection;?>
-    ];
-    $this->_setCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>, $additionalData);
+    ], null, null, null);
+    $this<?php echo $nestedCompositionCalls?>->_setCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $<?php echo $fieldName;?>, $additionalData);
     return $this;
 }
 public function has<?php echo $fieldMethod;?>(<?php echo $additionalInput;?>) :bool {
-    $additionalData = [
+    $additionalData = $this->_getCompositionAdditionalData([
         <?php echo $additionalInputDetection;?>
-    ];
-    return $this->_hasCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
+    ], null, null, null);
+    return $this<?php echo $nestedCompositionCalls?>->_hasCompositionVal('<?php echo $compositionFieldName;?>', '<?php echo $fieldName;?>', $additionalData);
 }
 
 <?php if ($additionalFields === 'files'): ?>
     public function get<?php echo $fieldMethod;?>InternalPath() :?array {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getInternalPath('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getInternalPath('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>Name(int $index = 0) :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileName('<?php echo $fieldName;?>', $index);
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileName('<?php echo $fieldName;?>', $index);
     }
     public function get<?php echo $fieldMethod;?>Extension(int $index = 0) :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileExtension('<?php echo $fieldName;?>', $index);
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileExtension('<?php echo $fieldName;?>', $index);
     }
     public function get<?php echo $fieldMethod;?>Content(int $index = 0) :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileContent('<?php echo $fieldName;?>', $index);
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileContent('<?php echo $fieldName;?>', $index);
     }
     public function get<?php echo $fieldMethod;?>LastModified(int $index = 0) :int|false|null {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileLastModified('<?php echo $fieldName;?>', $index);
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileLastModified('<?php echo $fieldName;?>', $index);
     }
     public function get<?php echo $fieldMethod;?>Size(int $index = 0) :int|false|null {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileSize('<?php echo $fieldName;?>', $index);
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileSize('<?php echo $fieldName;?>', $index);
     }
     public function get<?php echo $fieldMethod;?>PublicPath() :?array {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getPublicPath('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getPublicPath('<?php echo $fieldName;?>');
     }
 <?php elseif($additionalFields === 'file'): ?>
     public function get<?php echo $fieldMethod;?>InternalPath() :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getInternalPath('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getInternalPath('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>Name() :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileName('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileName('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>Extension() :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileExtension('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileExtension('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>Content() :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileContent('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileContent('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>LastModified() :int|false|null {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileLastModified('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileLastModified('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>Size() :int|false|null {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileSize('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getFileSize('<?php echo $fieldName;?>');
     }
     public function get<?php echo $fieldMethod;?>PublicPath() :?string {
-    return $this->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getPublicPath('<?php echo $fieldName;?>');
+        return $this<?php echo $nestedCompositionCalls?>->_getCompositionInstance('<?php echo $compositionFieldName;?>')?->_getPublicPath('<?php echo $fieldName;?>');
     }
 <?php endif; ?>

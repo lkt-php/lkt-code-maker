@@ -206,11 +206,10 @@ class FieldsCodeHelper
                         foreach ($relatedIdentifiers  as $relatedIdentifier) {
                             if ($relatedIdentifier->getColumn() === $field->getColumn()) continue;
 
-
                             $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
                             $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
 
-                            $additionalInput[] = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                            $additionalInput[] = "\\{$relatedIdentifierClassName}|int|null \${$relatedIdentifier->getName()}";
                             $additionalInputDetection[] = "'{$relatedIdentifier->getName()}' => \${$relatedIdentifier->getName()} instanceOf AbstractInstance ? (int)\${$relatedIdentifier->getName()}?->getIdColumnValue() : \${$relatedIdentifier->getName()},";
                         }
 
@@ -385,6 +384,8 @@ class FieldsCodeHelper
                 $additionalFields = '';
                 $additionalInput = '';
                 $additionalInputDetection = '';
+                $nestedCompositionCalls = [];
+                $prepareCompositionDataWithField = $fieldName;
 
                 $nestedCompositionLevel = 1;
 
@@ -394,20 +395,22 @@ class FieldsCodeHelper
 
                 if (!$composedField) {
                     $nestedCompositionField = $composedSchema->getCompositionFieldComposingThisField($composedFieldName);
-                    dd($nestedCompositionField);
-                    dd($composedSchema);
-
-                    $composedField = $composedSchema->getField($composedFieldName);
+                    $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
+                    $composedField = $nestedComposedSchema->getField($composedFieldName);
 
                     if (!$composedField) {
                         continue;
                     }
+                    $nestedCompositionCalls[] = "->_getCompositionInstance('$compositionFieldName', \$additionalData)";
+                    $compositionFieldName = $nestedCompositionField->getName();
+//                    $nestedCompositionCalls[] = "?->_getCompositionVal('{$nestedCompositionField->getName()}', '$fieldName', \$additionalData)";
                     ++$nestedCompositionLevel;
-                    $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
+
+                    $prepareCompositionDataWithField = 'null';
                 }
 
 
-                if ($nestedComposedSchema->hasComplexPrimaryKey()) {
+                if ($nestedComposedSchema?->hasComplexPrimaryKey()) {
                     $relatedIdentifiers = $nestedComposedSchema->getIdentifiers();
                     $_additionalInput = [];
                     $_additionalInputDetection = [];
@@ -417,7 +420,7 @@ class FieldsCodeHelper
                         $relatedIdentifierSchema = Schema::get($relatedIdentifier->getComponent());
                         $relatedIdentifierClassName = $relatedIdentifierSchema->getInstanceSettings()->getAppClass();
 
-                        $tmpAdditionalInput = "\\{$relatedIdentifierClassName}|int \${$relatedIdentifier->getName()}";
+                        $tmpAdditionalInput = "\\{$relatedIdentifierClassName}|int|null \${$relatedIdentifier->getName()}";
                         $compositionValue = $compositionValues[$relatedIdentifier->getName()];
                         if ($compositionValue !== null) {
                             $tmpAdditionalInput .= ' = null';
@@ -509,6 +512,8 @@ class FieldsCodeHelper
                     'additionalFields' => $additionalFields,
                     'additionalInput' => $additionalInput,
                     'additionalInputDetection' => $additionalInputDetection,
+                    '$prepareCompositionDataWithField' => $prepareCompositionDataWithField,
+                    'nestedCompositionCalls' => implode('', $nestedCompositionCalls),
                 ];
 
 

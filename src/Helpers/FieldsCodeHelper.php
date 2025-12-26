@@ -33,7 +33,6 @@ use Lkt\Factory\Schemas\Fields\UnixTimeStampField;
 use Lkt\Factory\Schemas\Fields\ValueListField;
 use Lkt\Factory\Schemas\Schema;
 use Lkt\Templates\Template;
-use function PHPUnit\Framework\isInstanceOf;
 
 class FieldsCodeHelper
 {
@@ -398,9 +397,7 @@ class FieldsCodeHelper
                     $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
                     $composedField = $nestedComposedSchema->getField($composedFieldName);
 
-                    if (!$composedField) {
-                        continue;
-                    }
+                    if (!$composedField) continue;
                     $nestedCompositionCalls[] = "->_getCompositionInstance('$compositionFieldName', \$additionalData)";
                     $compositionFieldName = $nestedCompositionField->getName();
 //                    $nestedCompositionCalls[] = "?->_getCompositionVal('{$nestedCompositionField->getName()}', '$fieldName', \$additionalData)";
@@ -522,15 +519,6 @@ class FieldsCodeHelper
                     ->parse();
             }
         }
-
-//        $compositionSchema = CompositionSchema::get($schema->getComponent());
-//        if ($compositionSchema) {
-//            foreach ($compositionSchema->getAllCompositionContent() as $compositionContent) {
-//
-//                $compositionField = $compositionContent->getRelatedField();
-//
-//            }
-//        }
 
         return implode("\n", $methods);
     }

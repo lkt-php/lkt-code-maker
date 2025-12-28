@@ -19,12 +19,16 @@ class OrderByMaker
 
         foreach ($stack as $schema) {
 
+            if ($schema->isLib()) continue;
+
             if ($schema->getTable() === '_') continue;
+
+            $instanceSettings = $schema->getInstanceSettings();
+            $filePath = $instanceSettings?->getGeneratedClassFullPath();
+            if (str_contains(realpath($filePath), '/vendor')) continue;
 
             $component = $schema->getComponent();
             echo "Generating order by for: {$component}...\n";
-
-            $instanceSettings = $schema->getInstanceSettings();
 
             $className = $instanceSettings?->getAppClass();
             if ($className === '') {

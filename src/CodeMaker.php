@@ -19,10 +19,14 @@ class CodeMaker
 
         foreach ($stack as $schema) {
 
-            $component = $schema->getComponent();
-            echo "Generating code for: {$component}...\n";
+            if ($schema->isLib()) continue;
 
             $instanceSettings = $schema->getInstanceSettings();
+            $filePath = $instanceSettings?->getGeneratedClassFullPath();
+            if (str_contains(realpath($filePath), '/vendor')) continue;
+
+            $component = $schema->getComponent();
+            echo "Generating code for: {$component}...\n";
 
             $className = $instanceSettings?->getAppClass();
             $returnSelf = '\\' . $className;

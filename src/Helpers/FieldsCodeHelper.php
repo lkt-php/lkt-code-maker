@@ -2,6 +2,10 @@
 
 namespace Lkt\CodeMaker\Helpers;
 
+use Lkt\CodeMaker\DTO\FieldGeneratorData;
+use Lkt\CodeMaker\FieldGeneration\BooleanFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\EmailFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\FloatFieldGenerator;
 use Lkt\Factory\Schemas\CompositionSchema;
 use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringAboveMinLengthComputedField;
@@ -50,6 +54,11 @@ class FieldsCodeHelper
             $fieldMethod = ucfirst($field->getName());
             $fieldName = $field->getName();
 
+            $fieldGeneratorData = new FieldGeneratorData();
+            $fieldGeneratorData->fieldName = $fieldName;
+            $fieldGeneratorData->methodName = $fieldMethod;
+            $fieldGeneratorData->selfReturningAnnotation = $returnSelf;
+
             $templateData = [
                 'fieldName' => $fieldName,
                 'fieldMethod' => $fieldMethod,
@@ -64,18 +73,14 @@ class FieldsCodeHelper
                     $relatedSchema = Schema::get($relatedComponent);
                     $relatedClassName = $relatedSchema->getInstanceSettings()->getAppClass();
                 }
+                $fieldGeneratorData->relatedComponent = $relatedComponent;
                 $templateData['component'] = $relatedComponent;
                 $templateData['relatedClassName'] = '';
                 $templateData['relatedReturnClass'] = '';
 
-                if ($relatedClassName !== '') {
+                if ($relatedClassName !== '' && !$field->isSoftTyped()) {
                     $templateData['relatedClassName'] = ':?\\' . $relatedClassName;
                     $templateData['relatedReturnClass'] = '@return \\' . $relatedClassName;
-                }
-
-                if ($field->isSoftTyped()) {
-                    $templateData['relatedClassName'] = '';
-                    $templateData['relatedReturnClass'] = '';
                 }
 
                 $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/foreign-key-field.phtml')
@@ -151,23 +156,29 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof EmailField) {
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/email-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+                $generator = new EmailFieldGenerator($fieldGeneratorData);
+                $methods[] = $generator->parse();
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/email-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
             }
 
             if ($field instanceof BooleanField) {
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/boolean-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+                $generator = new BooleanFieldGenerator($fieldGeneratorData);
+                $methods[] = $generator->parse();
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/boolean-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
             }
 
             if ($field instanceof FloatField) {
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/float-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+                $generator = new FloatFieldGenerator($fieldGeneratorData);
+                $methods[] = $generator->parse();
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/float-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
             }
 

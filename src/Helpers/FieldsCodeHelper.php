@@ -4,9 +4,11 @@ namespace Lkt\CodeMaker\Helpers;
 
 use Lkt\CodeMaker\DTO\FieldGeneratorData;
 use Lkt\CodeMaker\FieldGeneration\BooleanFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\ColorFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\EmailFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\FloatFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\IntegerChoiceFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\StringChoiceFieldGenerator;
 use Lkt\Factory\Schemas\CompositionSchema;
 use Lkt\Factory\Schemas\ComputedFields\BooleansComputedField;
 use Lkt\Factory\Schemas\ComputedFields\StringAboveMinLengthComputedField;
@@ -126,20 +128,26 @@ class FieldsCodeHelper
 
             if ($field instanceof StringChoiceField) {
 
-                $options = $field->getAllowedOptions();
+                $fieldGeneratorData->enabledEmptyPreset = $field->hasEnabledEmptyPreset();
+                $fieldGeneratorData->options = $field->getAllowedOptions();
+                $fieldGeneratorData->comparatorsIn = $field->getComparatorsIn();
+                $fieldGeneratorData->isMultiple = false;
+                $methods[] = StringChoiceFieldGenerator::generateCode($fieldGeneratorData);
 
-                $optionsMethods = array_map(function ($option) {
-                    return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
-                }, $options);
-
-                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
-                $templateData['options'] = $options;
-                $templateData['optionsMethods'] = $optionsMethods;
-                $templateData['comparatorsIn'] = $field->getComparatorsIn();
-
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+//                $options = $field->getAllowedOptions();
+//
+//                $optionsMethods = array_map(function ($option) {
+//                    return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
+//                }, $options);
+//
+//                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
+//                $templateData['options'] = $options;
+//                $templateData['optionsMethods'] = $optionsMethods;
+//                $templateData['comparatorsIn'] = $field->getComparatorsIn();
+//
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
 
             } elseif ($field instanceof ValueListField) {
@@ -290,9 +298,10 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof ColorField) {
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/color-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+                $methods[] = ColorFieldGenerator::generateCode($fieldGeneratorData);
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/color-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
             }
 

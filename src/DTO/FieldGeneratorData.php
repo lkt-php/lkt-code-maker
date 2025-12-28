@@ -13,8 +13,8 @@ class FieldGeneratorData
     public string $relatedReturnType = '';
 
     public array $options = [];
-    public array $optionsMethods = [];
     public array $comparatorsIn = [];
 
     public bool $isMultiple = false;
+    public bool $enabledEmptyPreset = false;
 }

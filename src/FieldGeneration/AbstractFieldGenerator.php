@@ -35,4 +35,21 @@ abstract class AbstractFieldGenerator
         }
         return '';
     }
+
+    public function getAllowedOptionsMethods(): array
+    {
+        $r = [];
+        if ($this instanceof IntegerChoiceFieldGenerator) {
+            foreach ($this->data->options as $key => $value) {
+                $d = is_numeric($key) ? trim($value) : trim($key);
+                $d = str_replace(' ', '', ucwords(str_replace('-', ' ', $d)));
+                $r[$key] = $d;
+            }
+        } else {
+            $r = array_map(function ($option) {
+                return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
+            }, $this->data->options);
+        }
+        return $r;
+    }
 }

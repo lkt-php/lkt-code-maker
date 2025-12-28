@@ -96,8 +96,7 @@ class FieldsCodeHelper
                 $fieldGeneratorData->options = $field->getAllowedOptions();
                 $fieldGeneratorData->comparatorsIn = $field->getComparatorsIn();
                 $fieldGeneratorData->isMultiple = $field->isMultiple();
-                $generator = new IntegerChoiceFieldGenerator($fieldGeneratorData);
-                $methods[] = $generator->parse();
+                $methods[] = IntegerChoiceFieldGenerator::generateCode($fieldGeneratorData);
 
 //                $options = $field->getAllowedOptions();
 //

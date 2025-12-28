@@ -19,6 +19,11 @@ abstract class AbstractFieldGenerator
     abstract public function getCheckers(): string;
     abstract public function parse(): string;
 
+    public static function generateCode(FieldGeneratorData $data): string
+    {
+        return (new static($data))->parse();
+    }
+
     protected function getRelatedReturnTypeFormatted(): string
     {
         if ($this->data->relatedReturnType !== '') return ":?\\{$this->data->relatedReturnType}";

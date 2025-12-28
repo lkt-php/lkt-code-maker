@@ -164,8 +164,7 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof EmailField) {
-                $generator = new EmailFieldGenerator($fieldGeneratorData);
-                $methods[] = $generator->parse();
+                $methods[] = EmailFieldGenerator::generateCode($fieldGeneratorData);
 //                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/email-field.phtml')
 //                    ->setData($templateData)
 //                    ->parse();
@@ -173,8 +172,7 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof BooleanField) {
-                $generator = new BooleanFieldGenerator($fieldGeneratorData);
-                $methods[] = $generator->parse();
+                $methods[] = BooleanFieldGenerator::generateCode($fieldGeneratorData);
 //                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/boolean-field.phtml')
 //                    ->setData($templateData)
 //                    ->parse();
@@ -182,8 +180,7 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof FloatField) {
-                $generator = new FloatFieldGenerator($fieldGeneratorData);
-                $methods[] = $generator->parse();
+                $methods[] = FloatFieldGenerator::generateCode($fieldGeneratorData);
 //                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/float-field.phtml')
 //                    ->setData($templateData)
 //                    ->parse();

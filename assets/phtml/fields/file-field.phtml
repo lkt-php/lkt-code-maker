@@ -60,7 +60,7 @@ public function has<?php echo $fieldMethod;?>() :bool {
     return $this->_hasFileVal('<?php echo $fieldName;?>');
 }
 public function set<?php echo $fieldMethod;?>WithHttpFile(array $value = null) :static {
-    return $this->_setFileValWithHttpFile('<?php echo $fieldName;?>');
+    return $this->_setFileValWithHttpFile('<?php echo $fieldName;?>', $value);
 }
 /** @return <?php echo $returnSelf;?>
  */

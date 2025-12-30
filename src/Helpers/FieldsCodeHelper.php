@@ -7,6 +7,7 @@ use Lkt\CodeMaker\FieldGeneration\BooleanFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\ColorFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\ConstantValueFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\EmailFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\FileFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\FloatFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\IntegerChoiceFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\StringChoiceFieldGenerator;
@@ -289,13 +290,16 @@ class FieldsCodeHelper
             }
 
             if ($field instanceof FileField) {
-                $templateData['isPublic'] = $field->getPublicPath() !== '';
-                $templateData['publicPath'] = $field->getPublicPath();
-                $templateData['isMultiple'] = $field->isMultiple();
+                $fieldGeneratorData->isMultiple = $field->isMultiple();
+                $methods[] = FileFieldGenerator::generateCode($fieldGeneratorData);
 
-                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/file-field.phtml')
-                    ->setData($templateData)
-                    ->parse();
+//                $templateData['isPublic'] = $field->getPublicPath() !== '';
+//                $templateData['publicPath'] = $field->getPublicPath();
+//                $templateData['isMultiple'] = $field->isMultiple();
+//
+//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/file-field.phtml')
+//                    ->setData($templateData)
+//                    ->parse();
                 continue;
             }
 

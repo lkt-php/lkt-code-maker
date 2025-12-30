@@ -5,6 +5,7 @@ namespace Lkt\CodeMaker\Helpers;
 use Lkt\CodeMaker\DTO\FieldGeneratorData;
 use Lkt\CodeMaker\FieldGeneration\BooleanFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\ColorFieldGenerator;
+use Lkt\CodeMaker\FieldGeneration\ConstantValueFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\EmailFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\FloatFieldGenerator;
 use Lkt\CodeMaker\FieldGeneration\IntegerChoiceFieldGenerator;
@@ -19,6 +20,7 @@ use Lkt\Factory\Schemas\ComputedFields\StringInComputedField;
 use Lkt\Factory\Schemas\Fields\BooleanField;
 use Lkt\Factory\Schemas\Fields\ColorField;
 use Lkt\Factory\Schemas\Fields\ConcatField;
+use Lkt\Factory\Schemas\Fields\ConstantValueField;
 use Lkt\Factory\Schemas\Fields\DateTimeField;
 use Lkt\Factory\Schemas\Fields\EmailField;
 use Lkt\Factory\Schemas\Fields\EncryptField;
@@ -302,6 +304,12 @@ class FieldsCodeHelper
 //                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/color-field.phtml')
 //                    ->setData($templateData)
 //                    ->parse();
+                continue;
+            }
+
+            if ($field instanceof ConstantValueField) {
+                $fieldGeneratorData->getterReturnType = $field->getConstantValueType();
+                $methods[] = ConstantValueFieldGenerator::generateCode($fieldGeneratorData);
                 continue;
             }
 

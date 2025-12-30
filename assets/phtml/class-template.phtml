@@ -24,7 +24,6 @@ use Lkt\Factory\Instantiator\Instantiator;
 class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implements?> {
     <?php echo $traits?>
 
-    const GENERATED_TYPE = '<?php echo $component; ?>';
     const COMPONENT = '<?php echo $component; ?>';
 
     <?php echo $methods?>
@@ -55,7 +54,7 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
         /**
         * @var <?php echo $queryCaller;?> $builder
         */
-        list($builder) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE);
+        list($builder) = Instantiator::getCustomQueryCaller(static::COMPONENT);
         return $builder;
     }
 
@@ -65,7 +64,7 @@ class <?php echo $className; ?> extends <?php echo $extends?> <?php echo $implem
         /**
         * @var <?php echo $queryCaller;?> $caller
         */
-        list($builder) = Instantiator::getCustomQueryCaller(static::GENERATED_TYPE, $data, $processRules, $filterRules);
+        list($builder) = Instantiator::getCustomQueryCaller(static::COMPONENT, $data, $processRules, $filterRules);
         return $builder;
     }
 

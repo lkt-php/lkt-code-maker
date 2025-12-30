@@ -17,4 +17,6 @@ class FieldGeneratorData
 
     public bool $isMultiple = false;
     public bool $enabledEmptyPreset = false;
+
+    public string $getterReturnType = '';
 }

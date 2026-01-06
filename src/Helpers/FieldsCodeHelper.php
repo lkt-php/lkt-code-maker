@@ -103,24 +103,6 @@ class FieldsCodeHelper
                 $fieldGeneratorData->isMultiple = $field->isMultiple();
                 $fieldGeneratorData->enumChoiceClass = $field->getEnumChoiceClass();
                 $methods[] = IntegerChoiceFieldGenerator::generateCode($fieldGeneratorData);
-
-//                $options = $field->getAllowedOptions();
-//
-//                $optionsMethods = [];
-//                foreach ($options as $key => $value) {
-//                    $d = is_numeric($key) ? trim($value) : trim($key);
-//                    $d = str_replace(' ', '', ucwords(str_replace('-', ' ', $d)));
-//                    $optionsMethods[$key] = $d;
-//                }
-//
-//                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
-//                $templateData['options'] = $options;
-//                $templateData['optionsMethods'] = $optionsMethods;
-//                $templateData['comparatorsIn'] = $field->getComparatorsIn();
-//                $templateData['isMultiple'] = $field->isMultiple();
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/integer-choice-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             } elseif ($field instanceof IntegerField) {
                 $templateData['isMultiple'] = $field->isMultiple();
@@ -138,21 +120,6 @@ class FieldsCodeHelper
                 $fieldGeneratorData->isMultiple = false;
                 $fieldGeneratorData->enumChoiceClass = $field->getEnumChoiceClass();
                 $methods[] = StringChoiceFieldGenerator::generateCode($fieldGeneratorData);
-
-//                $options = $field->getAllowedOptions();
-//
-//                $optionsMethods = array_map(function ($option) {
-//                    return str_replace(' ', '', ucwords(str_replace('-', ' ', $option)));
-//                }, $options);
-//
-//                $templateData['enabledEmptyPreset'] = $field->hasEnabledEmptyPreset();
-//                $templateData['options'] = $options;
-//                $templateData['optionsMethods'] = $optionsMethods;
-//                $templateData['comparatorsIn'] = $field->getComparatorsIn();
-//
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/string-choice-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
 
             } elseif ($field instanceof ValueListField) {
@@ -177,25 +144,16 @@ class FieldsCodeHelper
 
             if ($field instanceof EmailField) {
                 $methods[] = EmailFieldGenerator::generateCode($fieldGeneratorData);
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/email-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             }
 
             if ($field instanceof BooleanField) {
                 $methods[] = BooleanFieldGenerator::generateCode($fieldGeneratorData);
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/boolean-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             }
 
             if ($field instanceof FloatField) {
                 $methods[] = FloatFieldGenerator::generateCode($fieldGeneratorData);
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/float-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             }
 
@@ -294,22 +252,11 @@ class FieldsCodeHelper
             if ($field instanceof FileField) {
                 $fieldGeneratorData->isMultiple = $field->isMultiple();
                 $methods[] = FileFieldGenerator::generateCode($fieldGeneratorData);
-
-//                $templateData['isPublic'] = $field->getPublicPath() !== '';
-//                $templateData['publicPath'] = $field->getPublicPath();
-//                $templateData['isMultiple'] = $field->isMultiple();
-//
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/file-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             }
 
             if ($field instanceof ColorField) {
                 $methods[] = ColorFieldGenerator::generateCode($fieldGeneratorData);
-//                $methods[] = Template::file(__DIR__ . '/../../assets/phtml/fields/color-field.phtml')
-//                    ->setData($templateData)
-//                    ->parse();
                 continue;
             }
 

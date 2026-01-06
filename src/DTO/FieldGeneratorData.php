@@ -19,4 +19,5 @@ class FieldGeneratorData
     public bool $enabledEmptyPreset = false;
 
     public string $getterReturnType = '';
+    public string $enumChoiceClass = '';
 }

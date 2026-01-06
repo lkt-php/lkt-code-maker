@@ -57,4 +57,11 @@ abstract class AbstractFieldGenerator
         }
         return $r;
     }
+
+    public function getEnumChoiceClass(): string
+    {
+        $r = $this->data->enumChoiceClass;
+        if ($r !== '') $r = "|\\{$r}";
+        return $r;
+    }
 }

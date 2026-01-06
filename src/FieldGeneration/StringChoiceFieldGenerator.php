@@ -29,7 +29,8 @@ class StringChoiceFieldGenerator extends AbstractFieldGenerator
             $r[] = "public function set{$this->data->methodName}(array \${$this->data->fieldName}):static { return \$this->_setStringChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
 
         } else {
-            $r[] = "public function set{$this->data->methodName}(string \${$this->data->fieldName}):static { return \$this->_setStringChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
+            $enumClass = $this->getEnumChoiceClass();
+            $r[] = "public function set{$this->data->methodName}(string{$enumClass} \${$this->data->fieldName}):static { return \$this->_setStringChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
         }
 
         return implode(' ', $r);
@@ -45,7 +46,8 @@ class StringChoiceFieldGenerator extends AbstractFieldGenerator
             $r[] = "public function {$lowerFieldMethod}Is(array \$value):bool { return \$this->_stringChoiceEqual('{$this->data->fieldName}', \$value); }";
 
         } else {
-            $r[] = "public function {$lowerFieldMethod}Is(string \$value):bool { return \$this->_stringChoiceEqual('{$this->data->fieldName}', \$value); }";
+            $enumClass = $this->getEnumChoiceClass();
+            $r[] = "public function {$lowerFieldMethod}Is(string{$enumClass} \$value):bool { return \$this->_stringChoiceEqual('{$this->data->fieldName}', \$value); }";
         }
         $r[] = "public function has{$this->data->methodName}():bool { return \$this->_hasStringChoiceVal('{$this->data->fieldName}'); }";
         $r[] = "public function has{$this->data->methodName}In(array \$values):bool { return \$this->_stringChoiceIn('{$this->data->fieldName}', \$values); }";

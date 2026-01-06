@@ -101,6 +101,7 @@ class FieldsCodeHelper
                 $fieldGeneratorData->options = $field->getAllowedOptions();
                 $fieldGeneratorData->comparatorsIn = $field->getComparatorsIn();
                 $fieldGeneratorData->isMultiple = $field->isMultiple();
+                $fieldGeneratorData->enumChoiceClass = $field->getEnumChoiceClass();
                 $methods[] = IntegerChoiceFieldGenerator::generateCode($fieldGeneratorData);
 
 //                $options = $field->getAllowedOptions();
@@ -135,6 +136,7 @@ class FieldsCodeHelper
                 $fieldGeneratorData->options = $field->getAllowedOptions();
                 $fieldGeneratorData->comparatorsIn = $field->getComparatorsIn();
                 $fieldGeneratorData->isMultiple = false;
+                $fieldGeneratorData->enumChoiceClass = $field->getEnumChoiceClass();
                 $methods[] = StringChoiceFieldGenerator::generateCode($fieldGeneratorData);
 
 //                $options = $field->getAllowedOptions();

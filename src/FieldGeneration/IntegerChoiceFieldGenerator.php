@@ -29,7 +29,8 @@ class IntegerChoiceFieldGenerator extends AbstractFieldGenerator
             $r[] = "public function set{$this->data->methodName}(array \${$this->data->fieldName}):static { return \$this->_setIntegerChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
 
         } else {
-            $r[] = "public function set{$this->data->methodName}(int \${$this->data->fieldName}):static { return \$this->_setIntegerChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
+            $enumClass = $this->getEnumChoiceClass();
+            $r[] = "public function set{$this->data->methodName}(int{$enumClass} \${$this->data->fieldName}):static { return \$this->_setIntegerChoiceVal('{$this->data->fieldName}', \${$this->data->fieldName}); }";
         }
 
         return implode(' ', $r);
@@ -45,7 +46,8 @@ class IntegerChoiceFieldGenerator extends AbstractFieldGenerator
             $r[] = "public function {$lowerFieldMethod}Is(array \$value):bool { return \$this->_integerChoiceEqual('{$this->data->fieldName}', \$value); }";
 
         } else {
-            $r[] = "public function {$lowerFieldMethod}Is(int \$value):bool { return \$this->_integerChoiceEqual('{$this->data->fieldName}', \$value); }";
+            $enumClass = $this->getEnumChoiceClass();
+            $r[] = "public function {$lowerFieldMethod}Is(int{$enumClass} \$value):bool { return \$this->_integerChoiceEqual('{$this->data->fieldName}', \$value); }";
         }
         $r[] = "public function has{$this->data->methodName}():bool { return \$this->_hasIntegerChoiceVal('{$this->data->fieldName}'); }";
         $r[] = "public function has{$this->data->methodName}In(array \$values):bool { return \$this->_integerChoiceIn('{$this->data->fieldName}', \$values); }";

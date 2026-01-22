@@ -65,10 +65,10 @@ class StringChoiceFieldGenerator extends AbstractFieldGenerator
 
                 $optionVal = $this->data->options[$i];
 
-                $r[] = "public function {$lowerFieldMethod}Is{$option}(): bool { return \$this->_getStringChoiceVal('{$this->data->fieldName}') === {$optionVal}; }";
+                $r[] = "public function {$lowerFieldMethod}Is{$option}(): bool { return \$this->_getStringChoiceVal('{$this->data->fieldName}') === '{$optionVal}'; }";
 
                 $r[] = "/** @return {$this->data->selfReturningAnnotation} */";
-                $r[] = "public function set{$this->data->methodName}{$option}(): static { return \$this->_setStringChoiceVal('{$this->data->fieldName}', {$optionVal}); }";
+                $r[] = "public function set{$this->data->methodName}{$option}(): static { return \$this->_setStringChoiceVal('{$this->data->fieldName}', '{$optionVal}'); }";
 
 
                 if ($this->data->enabledEmptyPreset) {

@@ -379,6 +379,7 @@ class FieldsCodeHelper
 
                 if (!$composedField) {
                     $nestedCompositionField = $composedSchema->getCompositionFieldComposingThisField($composedFieldName);
+                    if (!$nestedCompositionField) continue;
                     $nestedComposedSchema = Schema::get($nestedCompositionField->getComponent());
                     $composedField = $nestedComposedSchema->getField($composedFieldName);
 
